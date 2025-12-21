@@ -1,0 +1,191 @@
+:root{
+  --bg: #0b0f14;
+  --text: rgba(255,255,255,.92);
+  --muted: rgba(255,255,255,.75);
+
+  --gap: 10px;             /* space between tiles */
+  --tileRatio: 4.5;        /* width:height */
+
+  --shadow: 0 10px 25px rgba(0,0,0,.35);
+
+  --safeTop: env(safe-area-inset-top, 0px);
+  --safeBottom: env(safe-area-inset-bottom, 0px);
+
+  --slideMs: 720ms;        /* ~2x slower than 360ms */
+  --ease: cubic-bezier(.2,.8,.2,1);
+}
+
+*{ box-sizing:border-box; }
+
+html, body{
+  height: 100%;
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+.theme-dark{ background: var(--bg); }
+
+/* HOME */
+.home{
+  min-height: 100vh;
+  background: var(--bg);
+}
+
+.home-header{
+  padding: calc(14px + var(--safeTop)) 14px 12px;
+}
+
+.home-header h1{
+  margin: 0;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: .2px;
+  color: var(--text);
+}
+
+/* Edge-to-edge tiles (no side padding) */
+.menu{
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+  padding: 0 0 calc(14px + var(--safeBottom));
+}
+
+/* Tile is full width, no rounding, no padding */
+.tile{
+  position: relative;
+  width: 100%;
+  display: block;
+  text-decoration: none;
+  color: var(--text);
+  background: #333;
+  overflow: hidden;
+  border: 0;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  box-shadow: var(--shadow);
+}
+
+/* Maintain ~4.5:1 ratio */
+.tile::before{
+  content:"";
+  display:block;
+  padding-top: calc(100% / var(--tileRatio));
+}
+
+.tile span{
+  position: absolute;
+  inset: 0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding: 10px 14px;
+  font-weight: 900;
+  font-size: 20px;
+  letter-spacing: .2px;
+  text-shadow: 0 2px 10px rgba(0,0,0,.35);
+}
+
+.tile:active{
+  transform: translateY(1px);
+}
+
+/* PAGE */
+.page{
+  min-height: 100vh;
+  background: #111;
+  position: relative;
+  overflow: hidden;
+}
+
+.page-header{
+  padding: calc(14px + var(--safeTop)) 14px 12px;
+  border-bottom: 1px solid rgba(255,255,255,.10);
+  background: rgba(0,0,0,.18);
+  backdrop-filter: blur(10px);
+}
+
+.page-header h1{
+  margin: 0;
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.page-body{
+  padding: 16px 14px calc(100px + var(--safeBottom)); /* leave room for bottom home button */
+}
+
+.card{
+  border-radius: 18px;
+  padding: 16px;
+  background: rgba(0,0,0,.22);
+  border: 1px solid rgba(255,255,255,.10);
+  box-shadow: var(--shadow);
+}
+
+/* Center-bottom home button */
+.home-fab{
+  position: fixed;
+  left: 50%;
+  bottom: calc(16px + var(--safeBottom));
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.18);
+  background: rgba(0,0,0,.35);
+  color: rgba(255,255,255,.95);
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.home-fab:active{
+  transform: translateX(-50%) translateY(1px);
+}
+
+.home-fab span{
+  font-weight: 800;
+  letter-spacing: .2px;
+}
+
+/* Slide-in/out animation class applied by JS */
+.slide-out-left{
+  animation: slideOutLeft var(--slideMs) var(--ease) forwards;
+}
+.slide-in-right{
+  animation: slideInRight var(--slideMs) var(--ease) forwards;
+}
+.slide-out-right{
+  animation: slideOutRight var(--slideMs) var(--ease) forwards;
+}
+.slide-in-left{
+  animation: slideInLeft var(--slideMs) var(--ease) forwards;
+}
+
+@keyframes slideOutLeft{
+  from{ transform: translateX(0); }
+  to{ transform: translateX(-100%); }
+}
+@keyframes slideInRight{
+  from{ transform: translateX(100%); }
+  to{ transform: translateX(0); }
+}
+@keyframes slideOutRight{
+  from{ transform: translateX(0); }
+  to{ transform: translateX(100%); }
+}
+@keyframes slideInLeft{
+  from{ transform: translateX(-100%); }
+  to{ transform: translateX(0); }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .slide-out-left, .slide-in-right, .slide-out-right, .slide-in-left{ animation: none !important; }
+  .tile:active, .home-fab:active{ transform: none; }
+}
