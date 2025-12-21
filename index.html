@@ -10,7 +10,7 @@
 <body class="theme-dark">
   <div class="shell">
     <div class="track" id="track">
-      <!-- PREV (filled by JS during right-swipe) -->
+      <!-- PREV -->
       <div class="screen" id="screenPrev" aria-hidden="true"></div>
 
       <!-- CURRENT -->
@@ -21,22 +21,58 @@
           </header>
 
           <section class="menu" aria-label="Navigation tiles">
-            <a class="tile" href="Scoop.html" data-color="#2d7dd2"><span>What's The Scoop</span></a>
-            <a class="tile" href="Local-Eateries.html" data-color="#f45b69"><span>Local Eateries</span></a>
-            <a class="tile" href="Local-Markets.html" data-color="#00b894"><span>Local Markets</span></a>
-            <a class="tile" href="Local-Adventures.html" data-color="#f6bd60"><span>Local Adventures</span></a>
-            <a class="tile" href="Wine-Tour.html" data-color="#6c5ce7"><span>Wine Tour</span></a>
-            <a class="tile" href="Driving-Tour.html" data-color="#e17055"><span>Driving Tour</span></a>
-            <a class="tile" href="Emergency-Info.html" data-color="#00a8ff"><span>Emergency Info</span></a>
+
+            <a class="tile tile-image"
+               href="Scoop.html"
+               style="background-image:url('Assets/Images/Home/Scoop.jpg');">
+              <span>What's The Scoop</span>
+            </a>
+
+            <a class="tile tile-image"
+               href="Local-Eateries.html"
+               style="background-image:url('Assets/Images/Home/Local-Eateries.jpg');">
+              <span>Local Eateries</span>
+            </a>
+
+            <a class="tile tile-image"
+               href="Local-Markets.html"
+               style="background-image:url('Assets/Images/Home/Local-Markets.jpg');">
+              <span>Local Markets</span>
+            </a>
+
+            <a class="tile tile-image"
+               href="Local-Adventures.html"
+               style="background-image:url('Assets/Images/Home/Local-Adventures.jpg');">
+              <span>Local Adventures</span>
+            </a>
+
+            <a class="tile tile-image"
+               href="Wine-Tour.html"
+               style="background-image:url('Assets/Images/Home/Wine-Tour.jpg');">
+              <span>Wine Tour</span>
+            </a>
+
+            <a class="tile tile-image"
+               href="Driving-Tour.html"
+               style="background-image:url('Assets/Images/Home/Driving-Tour.jpg');">
+              <span>Driving Tour</span>
+            </a>
+
+            <a class="tile tile-image"
+               href="Emergency-Info.html"
+               style="background-image:url('Assets/Images/Home/Emergency-Info.jpg');">
+              <span>Emergency Info</span>
+            </a>
+
           </section>
         </main>
       </div>
 
-      <!-- NEXT (filled by JS during left-swipe) -->
+      <!-- NEXT -->
       <div class="screen" id="screenNext" aria-hidden="true"></div>
     </div>
 
-    <!-- GLOBAL overlay home button -->
+    <!-- Global Home Button -->
     <button class="home-fab is-hidden" id="globalHomeFab" aria-label="Back to home">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
         <path d="M3 10.5L12 3l9 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>

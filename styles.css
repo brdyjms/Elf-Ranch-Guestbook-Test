@@ -93,6 +93,13 @@ html, body{
   transform: translateY(1px);
 }
 
+.tile-image{
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+
 /* PAGE */
 .page{
   min-height: 100vh;
