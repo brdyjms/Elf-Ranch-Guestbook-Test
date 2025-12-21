@@ -1,114 +1,176 @@
 (function () {
-  const SLIDE_MS = 720; // keep in sync with --slideMs if you edit it
+  const SLIDE_MS = 720;      // keep consistent with --slideMs
+  const DETAIL_SHIFT = -12;  // darker background on subpages
 
-  function setTileColors() {
-    document.querySelectorAll('.tile[data-color]').forEach(tile => {
+  const track = document.getElementById('track');
+  const screenCurrent = document.getElementById('screenCurrent');
+  const screenNext = document.getElementById('screenNext');
+
+  function setTileColors(root = document) {
+    root.querySelectorAll('.tile[data-color]').forEach(tile => {
       tile.style.background = tile.dataset.color;
     });
   }
 
-  // Shift hex brightness by percent: negative darkens, positive lightens
-  function shiftHex(hex, percent) {
+  function clamp(v, min, max){ return Math.min(max, Math.max(min, v)); }
+
+  function hexToRgb(hex){
     const h = hex.replace('#','').trim();
-    const full = h.length === 3 ? h.split('').map(c => c+c).join('') : h;
+    const full = h.length === 3 ? h.split('').map(c=>c+c).join('') : h;
     const int = parseInt(full, 16);
-    let r = (int >> 16) & 255;
-    let g = (int >> 8) & 255;
-    let b = int & 255;
+    return { r: (int>>16)&255, g: (int>>8)&255, b: int&255 };
+  }
 
-    const t = percent < 0 ? 0 : 255;
-    const p = Math.abs(percent) / 100;
-
-    r = Math.round((t - r) * p + r);
-    g = Math.round((t - g) * p + g);
-    b = Math.round((t - b) * p + b);
-
+  function rgbToHex(r,g,b){
     const to = (n) => n.toString(16).padStart(2,'0');
     return `#${to(r)}${to(g)}${to(b)}`;
   }
 
-  function setDetailBackground() {
-    const page = document.querySelector('.page[data-base]');
-    if (!page) return;
-    const base = page.dataset.base;
-    // match but a few shades darker (change to +10 for lighter)
-    const bg = shiftHex(base, -12);
-    page.style.background = bg;
+  function shiftHex(hex, percent){
+    const {r,g,b} = hexToRgb(hex);
+    const t = percent < 0 ? 0 : 255;
+    const p = Math.abs(percent) / 100;
+    const nr = Math.round((t - r) * p + r);
+    const ng = Math.round((t - g) * p + g);
+    const nb = Math.round((t - b) * p + b);
+    return rgbToHex(clamp(nr,0,255), clamp(ng,0,255), clamp(nb,0,255));
   }
 
-  function animateNavigate(anchor, direction) {
-    // direction: 'left' (to detail) or 'right' (back to home)
-    const href = anchor.getAttribute('href');
-    if (!href) return;
+  function applyDetailBackground(root = document) {
+    const page = root.querySelector('.page[data-base]');
+    if (!page) return;
+    const base = page.dataset.base;
+    page.style.background = shiftHex(base, DETAIL_SHIFT);
+  }
 
-    // Prefer reducing motion settings
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduceMotion) {
-      window.location.href = href;
+  async function fetchPage(url) {
+    const res = await fetch(url, { credentials: 'same-origin' });
+    if (!res.ok) throw new Error(`Failed to load ${url}: ${res.status}`);
+    return await res.text();
+  }
+
+  function parseIncoming(htmlText) {
+    const doc = new DOMParser().parseFromString(htmlText, 'text/html');
+
+    // Grab the incoming page's "current screen" content
+    const incomingCurrent = doc.querySelector('#screenCurrent');
+    if (!incomingCurrent) throw new Error('Incoming page missing #screenCurrent');
+
+    // We want the *inside* of #screenCurrent (so we keep our shell/track)
+    const inner = incomingCurrent.innerHTML;
+
+    const title = doc.querySelector('title')?.textContent?.trim() || document.title;
+    return { inner, title };
+  }
+
+  function isReducedMotion() {
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  }
+
+  function lockDuringTransition(lock) {
+    // prevent double-taps during animation
+    document.documentElement.style.pointerEvents = lock ? 'none' : '';
+  }
+
+  async function slideTo(url, direction) {
+    // direction: 'left' forward, 'right' back
+    if (!track || !screenCurrent || !screenNext) {
+      // fallback: normal nav
+      window.location.href = url;
       return;
     }
 
-    const root = document.documentElement;
-    // Apply animation to body so entire page slides
-    document.body.classList.remove('slide-out-left','slide-out-right','slide-in-left','slide-in-right');
-
-    if (direction === 'left') {
-      document.body.classList.add('slide-out-left');
-    } else {
-      document.body.classList.add('slide-out-right');
+    if (isReducedMotion()) {
+      window.location.href = url;
+      return;
     }
 
-    window.setTimeout(() => {
-      window.location.href = href;
-    }, SLIDE_MS);
+    lockDuringTransition(true);
+
+    try {
+      // Prepare next screen content
+      const html = await fetchPage(url);
+      const { inner, title } = parseIncoming(html);
+
+      screenNext.innerHTML = inner;
+
+      // Run per-page setup on the NEXT screen DOM
+      setTileColors(screenNext);
+      applyDetailBackground(screenNext);
+
+      // Position: next is always to the right by default.
+      // Animate track to reveal it (left swipe), or reveal previous (right swipe).
+      track.style.transition = `transform ${SLIDE_MS}ms cubic-bezier(.2,.8,.2,1)`;
+
+      // Ensure we start at 0 before animating
+      track.style.transform = 'translateX(0%)';
+      // Force layout so transform applies before we change it
+      void track.offsetWidth;
+
+      track.style.transform = (direction === 'left')
+        ? 'translateX(-50%)'
+        : 'translateX(50%)';
+
+      // After animation, swap screens, reset track, update URL/title
+      window.setTimeout(() => {
+        // Commit content
+        screenCurrent.innerHTML = screenNext.innerHTML;
+        screenNext.innerHTML = '';
+
+        // Reset track back to "current"
+        track.style.transition = 'none';
+        track.style.transform = 'none';          // <-- important
+        void track.offsetWidth;                  // force reset
+        track.style.transition = `transform ${SLIDE_MS}ms cubic-bezier(.2,.8,.2,1)`;
+
+
+        document.title = title;
+        history.pushState({}, '', url);
+
+        // Re-wire handlers on the new current screen
+        wireHandlers();
+
+        lockDuringTransition(false);
+      }, SLIDE_MS);
+    } catch (err) {
+      lockDuringTransition(false);
+      // fallback to normal navigation if anything fails
+      window.location.href = url;
+    }
   }
 
-  function wireHomeLinks() {
-    // Home tiles slide left before going to new page
-    document.querySelectorAll('a.tile').forEach(a => {
-      a.addEventListener('click', (e) => {
+  function wireHandlers() {
+    // Tiles (home) => slide left to subpage
+    document.querySelectorAll('a.tile[href]').forEach(a => {
+      a.onclick = (e) => {
         e.preventDefault();
-        animateNavigate(a, 'left');
-      });
+        slideTo(a.getAttribute('href'), 'left');
+      };
     });
-  }
 
-  function wireDetailHomeButton() {
-    const btn = document.querySelector('[data-home]');
-    if (!btn) return;
-
-    btn.addEventListener('click', (e) => {
-      e.preventDefault();
-
-      // Navigate back to home with slide right
-      const fakeAnchor = document.createElement('a');
-      fakeAnchor.setAttribute('href', 'index.html');
-      animateNavigate(fakeAnchor, 'right');
-    });
-  }
-
-  // When a page loads, slide in from the appropriate side (optional polish)
-  function playEntrance() {
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduceMotion) return;
-
-    // If coming from home -> detail, slide in from right
-    // If coming from detail -> home, slide in from left
-    // We'll infer from referrer ending
-    const ref = document.referrer || '';
-    document.body.classList.remove('slide-out-left','slide-out-right','slide-in-left','slide-in-right');
-
-    if (ref.includes('index.html') && !location.pathname.endsWith('index.html')) {
-      document.body.classList.add('slide-in-right');
-    } else if (!ref.includes('index.html') && location.pathname.endsWith('index.html')) {
-      document.body.classList.add('slide-in-left');
+    // Home FAB on subpages => slide right to index
+    const homeBtn = document.querySelector('[data-home]');
+    if (homeBtn) {
+      homeBtn.onclick = (e) => {
+        e.preventDefault();
+        slideTo('index.html', 'right');
+      };
     }
+
+    // Apply per-page visuals on current screen
+    setTileColors(document);
+    applyDetailBackground(document);
   }
+
+  // Handle browser back/forward
+  window.addEventListener('popstate', () => {
+    // On pop, do a normal fetch+swap without a directional guess
+    // We’ll choose direction by whether we’re going to index.
+    const target = location.pathname.split('/').pop() || 'index.html';
+    const dir = (target.toLowerCase() === 'index.html') ? 'right' : 'left';
+    slideTo(target, dir);
+  });
 
   // Init
-  setTileColors();
-  setDetailBackground();
-  wireHomeLinks();
-  wireDetailHomeButton();
-  playEntrance();
+  wireHandlers();
 })();

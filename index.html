@@ -7,23 +7,33 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body class="theme-dark">
-  <main class="home">
-    <header class="home-header">
-      <h1>Elf Ranch Guestbook</h1>
-    </header>
+  <div class="shell">
+    <div class="track" id="track">
+      <!-- current screen -->
+      <div class="screen" id="screenCurrent">
+        <main class="home">
+          <header class="home-header">
+            <h1>Elf Ranch Guestbook</h1>
+          </header>
 
-    <section class="menu" aria-label="Navigation tiles">
-      <a class="tile" href="Scoop.html" data-color="#2d7dd2"><span>What's The Scoop</span></a>
-			<a class="tile" href="Local-Eateries.html" data-color="#f45b69"><span>Local Eateries</span></a>
-			<a class="tile" href="Local-Markets.html" data-color="#00b894"><span>Local Markets</span></a>
-			<a class="tile" href="Local-Adventures.html" data-color="#f6bd60"><span>Local Adventures</span></a>
-			<a class="tile" href="Wine-Tour.html" data-color="#6c5ce7"><span>Wine Tour</span></a>
-			<a class="tile" href="Driving-Tour.html" data-color="#e17055"><span>Driving Tour</span></a>
-			<a class="tile" href="Emergency-Info.html" data-color="#00a8ff"><span>Emergency Info</span></a>
+          <section class="menu" aria-label="Navigation tiles">
+            <a class="tile" href="Scoop.html" data-color="#2d7dd2"><span>What's The Scoop</span></a>
+            <a class="tile" href="Local-Eateries.html" data-color="#f45b69"><span>Local Eateries</span></a>
+            <a class="tile" href="Local-Markets.html" data-color="#00b894"><span>Local Markets</span></a>
+            <a class="tile" href="Local-Adventures.html" data-color="#f6bd60"><span>Local Adventures</span></a>
+            <a class="tile" href="Wine-Tour.html" data-color="#6c5ce7"><span>Wine Tour</span></a>
+            <a class="tile" href="Driving-Tour.html" data-color="#e17055"><span>Driving Tour</span></a>
+            <a class="tile" href="Emergency-Info.html" data-color="#00a8ff"><span>Emergency Info</span></a>
+          </section>
+        </main>
+      </div>
 
-    </section>
-  </main>
+      <!-- next screen (filled by JS) -->
+      <div class="screen" id="screenNext" aria-hidden="true"></div>
+    </div>
+  </div>
 
   <script src="app.js" defer></script>
 </body>
+
 </html>

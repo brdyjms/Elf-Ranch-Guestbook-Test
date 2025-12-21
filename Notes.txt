@@ -1,0 +1,31 @@
+Create the other 6 pages quickly
+
+eateries.html
+
+title: Local Eateries
+
+data-base: #f45b69
+
+markets.html
+
+#00b894
+
+adventures.html
+
+#f6bd60
+
+wine.html
+
+#6c5ce7
+
+driving.html
+
+#e17055
+
+emergency.html
+
+#00a8ff
+
+
+Scoop
+#2d7dd2

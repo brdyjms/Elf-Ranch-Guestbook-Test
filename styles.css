@@ -143,6 +143,7 @@ html, body{
   box-shadow: var(--shadow);
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
+  z-index: 50;
 }
 
 .home-fab:active{
@@ -154,19 +155,37 @@ html, body{
   letter-spacing: .2px;
 }
 
-/* Slide-in/out animation class applied by JS */
-.slide-out-left{
-  animation: slideOutLeft var(--slideMs) var(--ease) forwards;
+/* App shell: holds two screens side-by-side */
+.shell{
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background: var(--bg);
 }
-.slide-in-right{
-  animation: slideInRight var(--slideMs) var(--ease) forwards;
+
+.track{
+  height: 100%;
+  width: 200%;
+  display: flex;
+  transform: none; /* <-- important (not translateX(0%)) */
+  transition: transform var(--slideMs) var(--ease);
+  will-change: transform;
 }
-.slide-out-right{
-  animation: slideOutRight var(--slideMs) var(--ease) forwards;
+
+
+.screen{
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
 }
-.slide-in-left{
-  animation: slideInLeft var(--slideMs) var(--ease) forwards;
+
+/* Each page scrolls internally */
+.screen > *{
+  height: 100%;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
+
 
 @keyframes slideOutLeft{
   from{ transform: translateX(0); }
