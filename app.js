@@ -2,6 +2,11 @@
   const SLIDE_MS = 720;       // match CSS --slideMs
   const DETAIL_SHIFT = -12;   // subpage background darker
 
+  // Swipe gesture tuning
+  const SWIPE_MIN_PX = 60;     // minimum horizontal distance
+  const SWIPE_MAX_Y = 50;      // if vertical movement exceeds this, ignore
+  const SWIPE_MIN_VX = 0.15;   // px/ms minimum horizontal velocity-ish
+
   // Track positions for 3 panes: [Prev | Current | Next]
   const POS_LEFT   = 'translateX(0%)';            // show Prev
   const POS_CENTER = 'translateX(-33.3333%)';     // show Current
@@ -47,10 +52,13 @@
     page.style.background = shiftHex(page.dataset.base, DETAIL_SHIFT);
   }
 
+  function isOnSubpage(root = document) {
+    return !!root.querySelector('.page');
+  }
+
   function updateHomeFabVisibility(root = document) {
     if (!globalHomeFab) return;
-    const isSubpage = !!root.querySelector('.page');
-    globalHomeFab.classList.toggle('is-hidden', !isSubpage);
+    globalHomeFab.classList.toggle('is-hidden', !isOnSubpage(root));
   }
 
   function isReducedMotion() {
@@ -82,8 +90,7 @@
       ? `transform ${SLIDE_MS}ms cubic-bezier(.2,.8,.2,1)`
       : 'none';
     track.style.transform = pos;
-    // force layout when turning transitions off/on
-    void track.offsetWidth;
+    void track.offsetWidth; // force layout
   }
 
   function clearSideScreens() {
@@ -91,8 +98,11 @@
     if (screenNext) screenNext.innerHTML = '';
   }
 
+  let inFlight = false;
+
   async function slideTo(url, direction) {
     // direction: 'left' forward (to Next), 'right' back (to Prev)
+    if (inFlight) return;
     if (!track || !screenPrev || !screenCurrent || !screenNext) {
       window.location.href = url;
       return;
@@ -102,13 +112,13 @@
       return;
     }
 
+    inFlight = true;
     lockDuringTransition(true);
 
     try {
       const html = await fetchPage(url);
       const { inner, title } = parseIncoming(html);
 
-      // Put incoming into the correct side screen
       if (direction === 'left') {
         screenNext.innerHTML = inner;
         setTileColors(screenNext);
@@ -119,35 +129,96 @@
         applyDetailBackground(screenPrev);
       }
 
-      // Ensure we start centered on current (no transition, then animate)
       setTrack(POS_CENTER, false);
       setTrack(direction === 'left' ? POS_RIGHT : POS_LEFT, true);
 
       window.setTimeout(() => {
-        // Commit swap into CURRENT
         screenCurrent.innerHTML = (direction === 'left')
           ? screenNext.innerHTML
           : screenPrev.innerHTML;
 
         clearSideScreens();
 
-        // Update title + URL
         document.title = title;
         history.pushState({}, '', url);
 
-        // Re-center track without a visible jump
         setTrack(POS_CENTER, false);
 
-        // Rewire handlers for new current
         wireHandlers();
 
         lockDuringTransition(false);
+        inFlight = false;
       }, SLIDE_MS);
 
     } catch (err) {
       lockDuringTransition(false);
+      inFlight = false;
       window.location.href = url;
     }
+  }
+
+  // -------- Swipe-right gesture (subpages -> home) --------
+  let touchStartX = 0;
+  let touchStartY = 0;
+  let touchStartT = 0;
+  let tracking = false;
+
+  function shouldIgnoreGestureTarget(target) {
+    if (!target) return false;
+    return !!target.closest('a, button, input, textarea, select, label');
+  }
+
+  function onTouchStart(e) {
+    if (!isOnSubpage(document)) return;          // only on subpages
+    if (inFlight) return;
+    if (!e.touches || e.touches.length !== 1) return;
+
+    const t = e.touches[0];
+    touchStartX = t.clientX;
+    touchStartY = t.clientY;
+    touchStartT = performance.now();
+    tracking = !shouldIgnoreGestureTarget(e.target);
+  }
+
+  function onTouchMove(e) {
+    if (!tracking) return;
+    // We don't call preventDefault here; we just decide later.
+    // This keeps vertical scrolling smooth.
+  }
+
+  function onTouchEnd(e) {
+    if (!tracking) return;
+    tracking = false;
+
+    if (!e.changedTouches || e.changedTouches.length !== 1) return;
+    const t = e.changedTouches[0];
+
+    const dx = t.clientX - touchStartX;
+    const dy = t.clientY - touchStartY;
+    const dt = Math.max(1, performance.now() - touchStartT);
+
+    // Must be mostly horizontal, to the right
+    if (dx <= SWIPE_MIN_PX) return;
+    if (Math.abs(dy) > SWIPE_MAX_Y) return;
+
+    const vx = dx / dt; // px per ms
+    if (vx < SWIPE_MIN_VX) return;
+
+    // Trigger back to home
+    slideTo('index.html', 'right');
+  }
+
+  function wireSwipeGesture() {
+    // Attach to the current screen container (safe for our swapped DOM)
+    // Using passive listeners to avoid scroll jank.
+    const el = screenCurrent || document;
+    el.removeEventListener('touchstart', onTouchStart);
+    el.removeEventListener('touchmove', onTouchMove);
+    el.removeEventListener('touchend', onTouchEnd);
+
+    el.addEventListener('touchstart', onTouchStart, { passive: true });
+    el.addEventListener('touchmove', onTouchMove, { passive: true });
+    el.addEventListener('touchend', onTouchEnd, { passive: true });
   }
 
   function wireHandlers() {
@@ -171,6 +242,9 @@
     setTileColors(document);
     applyDetailBackground(document);
     updateHomeFabVisibility(document);
+
+    // Swipe-right on subpages
+    wireSwipeGesture();
   }
 
   window.addEventListener('popstate', () => {
