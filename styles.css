@@ -169,18 +169,18 @@ html, body{
 
 .track{
   height: 100%;
-  width: 200%;
+  width: 300%;
   display: flex;
-  transform: translateX(0%);
+  transform: translateX(-33.3333%); /* center on CURRENT */
   transition: transform var(--slideMs) var(--ease);
   will-change: transform;
 }
-
 .screen{
-  width: 50%;
+  width: 33.3333%;
   height: 100%;
   overflow: hidden;
 }
+
 
 /* Each page scrolls internally */
 .screen > *{
