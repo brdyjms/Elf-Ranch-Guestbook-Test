@@ -1,3 +1,7 @@
+/* =============================================================================
+   General (Variables, Reset, Base)
+   ============================================================================= */
+
 :root{
   --bg: #061222;
   --text: rgba(255,255,255,.92);
@@ -27,102 +31,57 @@ html, body{
 
 .theme-dark{ background: var(--bg); }
 
-/* HOME */
-.home{
-  min-height: 100vh;
+
+/* =============================================================================
+   App Shell & Navigation (3-pane swipe)
+   ============================================================================= */
+
+.shell{
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
   background: var(--bg);
 }
 
-.home-header{
-  padding: calc(14px + var(--safeTop)) 14px 12px;
-}
-
-.home-header h1{
-  margin: 0;
-  font-size: 18px;
-  font-weight: 800;
-  letter-spacing: .2px;
-  color: var(--text);
-}
-
-/* Edge-to-edge tiles (no side padding) */
-.menu{
+/* App shell: holds three screens [Prev | Current | Next] */
+.track{
+  height: 100%;
+  width: 300%;
   display: flex;
-  flex-direction: column;
-  gap: var(--gap);
-  padding: 0 0 calc(14px + var(--safeBottom));
+  transform: translateX(-33.3333%); /* center on CURRENT */
+  transition: transform var(--slideMs) var(--ease);
+  will-change: transform;
 }
 
-/* Tile is full width, no rounding, no padding */
-.tile{
-  position: relative;
-  width: 100%;
-  aspect-ratio: 4.5 / 1;   /* ✅ exact ratio control */
-  display: block;
-  text-decoration: none;
-  color: var(--text);
-  background: #333;
+.screen{
+  width: 33.3333%;
+  height: 100%;
   overflow: hidden;
-  border: 0;
-  -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
-  box-shadow: var(--shadow);
+}
+
+/* Each page scrolls internally */
+.screen > *{
+  height: 100%;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Legacy keyframes (kept for compatibility; not used by current track transform) */
+@keyframes slideOutLeft{ from{ transform: translateX(0); } to{ transform: translateX(-100%); } }
+@keyframes slideInRight{ from{ transform: translateX(100%); } to{ transform: translateX(0); } }
+@keyframes slideOutRight{ from{ transform: translateX(0); } to{ transform: translateX(100%); } }
+@keyframes slideInLeft{ from{ transform: translateX(-100%); } to{ transform: translateX(0); } }
+
+@media (prefers-reduced-motion: reduce){
+  .slide-out-left, .slide-in-right, .slide-out-right, .slide-in-left{ animation: none !important; }
+  .tile:active, .home-fab:active{ transform: none; }
 }
 
 
-.tile span{
-  position: absolute;
-  inset: 0;
+/* =============================================================================
+   Shared Pages & Components
+   ============================================================================= */
 
-  display: flex;
-  align-items: center;        /* keep vertical centering */
-  justify-content: flex-end;  /* move text to the right */
-
-  text-align: right;
-
-  padding-right: 20px;        /* space from right edge */
-  padding-left: 14px;         /* keeps text from feeling cramped */
-
-  font-weight: 900;
-  font-size: 20px;
-  letter-spacing: .2px;
-
-  z-index: 1;
-  text-shadow:
-    0 2px 12px rgba(0,0,0,.65),
-    0 1px 3px rgba(0,0,0,.45);
-}
-
-
-
-.tile:active{
-  transform: translateY(1px);
-}
-
-.tile-image{
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
-
-.tile-image::after{
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-
-  /* Subtle legibility gradient */
-  background: linear-gradient(
-    to top,
-    rgba(0, 0, 0, 0.55),
-    rgba(0, 0, 0, 0.15) 45%,
-    rgba(0, 0, 0, 0.05) 70%
-  );
-}
-
-
-/* PAGE */
 .page{
   min-height: 100vh;
   background: #111;
@@ -148,7 +107,6 @@ html, body{
   display: flex;
   flex-direction: column;
   gap: 16px; /* space between cards */
-
 }
 
 .card{
@@ -158,34 +116,6 @@ html, body{
   border: 1px solid rgba(255,255,255,.10);
   box-shadow: var(--shadow);
 }
-
-
-/* Call-to-action text (larger, centered, not in a card) */
-.cta-text{
-  text-align: center;
-  margin: 28px 0 12px;
-}
-
-.cta-title{
-  font-size: 22px;
-  font-weight: 900;
-  line-height: 1.3;
-  letter-spacing: .3px;
-  text-shadow:
-    0 2px 10px rgba(0,0,0,.65),
-    0 1px 3px rgba(0,0,0,.45);
-}
-
-/* Closing note text (normal size, centered) */
-.closing-text{
-  text-align: center;
-  font-size: 16px;
-  line-height: 1.55;
-  color: rgba(255,255,255,.9);
-  margin-bottom: 12px;
-}
-
-
 
 /* Center-bottom home button */
 .home-fab{
@@ -220,80 +150,156 @@ html, body{
   display: none;
 }
 
-/* App shell: holds two screens side-by-side */
-.shell{
-  position: fixed;
-  inset: 0;
-  overflow: hidden;
+
+/* =============================================================================
+   Home Page
+   ============================================================================= */
+
+.home{
+  min-height: 100vh;
   background: var(--bg);
 }
 
-.track{
-  height: 100%;
-  width: 300%;
+.home-header{
+  padding: calc(14px + var(--safeTop)) 14px 12px;
+}
+
+.home-header h1{
+  margin: 0;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: .2px;
+  color: var(--text);
+}
+
+/* Edge-to-edge tiles (no side padding) */
+.menu{
   display: flex;
-  transform: translateX(-33.3333%); /* center on CURRENT */
-  transition: transform var(--slideMs) var(--ease);
-  will-change: transform;
+  flex-direction: column;
+  gap: var(--gap);
+  padding: 0 0 calc(14px + var(--safeBottom));
 }
-.screen{
-  width: 33.3333%;
-  height: 100%;
+
+/* Tile is full width, no rounding, no padding */
+.tile{
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4.5 / 1;   /* exact ratio control */
+  display: block;
+  text-decoration: none;
+  color: var(--text);
+  background: #333;
   overflow: hidden;
+  border: 0;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  box-shadow: var(--shadow);
+}
+
+.tile span{
+  position: absolute;
+  inset: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-end; /* right-align text */
+
+  text-align: right;
+
+  padding-right: 20px;
+  padding-left: 14px;
+
+  font-weight: 900;
+  font-size: 20px;
+  letter-spacing: .2px;
+
+  z-index: 1;
+  text-shadow:
+    0 2px 12px rgba(0,0,0,.65),
+    0 1px 3px rgba(0,0,0,.45);
+}
+
+.tile:active{
+  transform: translateY(1px);
+}
+
+.tile-image{
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.tile-image::after{
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.55),
+    rgba(0, 0, 0, 0.15) 45%,
+    rgba(0, 0, 0, 0.05) 70%
+  );
 }
 
 
-/* Each page scrolls internally */
-.screen > *{
-  height: 100%;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
+/* =============================================================================
+   Scoop Page (scoped)
+   Add: <main class="page page-scoop" ...> in Scoop.html
+   ============================================================================= */
+
+/* Standalone call-to-action text (not inside a card) */
+.page-scoop .cta-text{
+  text-align: center;
+  margin: 28px 0 12px;
+}
+
+.page-scoop .cta-title{
+  font-size: 22px;
+  font-weight: 900;
+  line-height: 1.3;
+  letter-spacing: .3px;
+  text-shadow:
+    0 2px 10px rgba(0,0,0,.65),
+    0 1px 3px rgba(0,0,0,.45);
+}
+
+/* Closing note text (normal size, centered) */
+.page-scoop .closing-text{
+  text-align: center;
+  font-size: 16px;
+  line-height: 1.55;
+  color: rgba(255,255,255,.9);
+  margin-bottom: 12px;
 }
 
 
+/* =============================================================================
+   Emergency Info Page (scoped)
+   ============================================================================= */
 
-@keyframes slideOutLeft{
-  from{ transform: translateX(0); }
-  to{ transform: translateX(-100%); }
-}
-@keyframes slideInRight{
-  from{ transform: translateX(100%); }
-  to{ transform: translateX(0); }
-}
-@keyframes slideOutRight{
-  from{ transform: translateX(0); }
-  to{ transform: translateX(100%); }
-}
-@keyframes slideInLeft{
-  from{ transform: translateX(-100%); }
-  to{ transform: translateX(0); }
+/* Space between emergency cards */
+.page-emergency .card-list{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
-@media (prefers-reduced-motion: reduce){
-  .slide-out-left, .slide-in-right, .slide-out-right, .slide-in-left{ animation: none !important; }
-  .tile:active, .home-fab:active{ transform: none; }
-}
-
-
-
-/* ==============================
-   Emergency card layout
-   ============================== */
-
-.emergency-card{
+/* Emergency card layout */
+.page-emergency .emergency-card{
   display: flex;
   align-items: stretch;
   gap: 14px;
 }
 
-/* Left side: text content */
-.emergency-card-content{
+/* Left side: text */
+.page-emergency .emergency-card-content{
   flex: 1;
   min-width: 0;
 }
 
-/* Right side: stacked actions */
-.emergency-card-actions{
+/* Right side: stacked action icons */
+.page-emergency .emergency-card-actions{
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -301,7 +307,7 @@ html, body{
 }
 
 /* Large, thumb-friendly icon buttons */
-.emergency-icon-btn{
+.page-emergency .emergency-icon-btn{
   width: 56px;
   height: 56px;
   border-radius: 16px;
@@ -315,28 +321,17 @@ html, body{
   -webkit-tap-highlight-color: transparent;
 }
 
-.emergency-icon-btn img{
+.page-emergency .emergency-icon-btn img{
   width: 30px;
   height: 30px;
 }
 
-.emergency-icon-btn:active{
+.page-emergency .emergency-icon-btn:active{
   transform: translateY(1px);
 }
 
-
-
-/* ==============================
-   Emergency page layout tweaks
-   ============================== */
-
-/* Spacing between cards */
-.card-list{
-  gap: 20px; /* increased spacing between cards */
-}
-
-/* Card title: slightly bigger, bolder, and separated */
-.card-title{
+/* Card typography (Emergency only) */
+.page-emergency .card-title{
   font-size: 17px;
   font-weight: 900;
   padding-bottom: 12px;
@@ -344,63 +339,43 @@ html, body{
   border-bottom: 1px solid rgba(255,255,255,.10);
 }
 
-/* Optional: give card body a touch more air */
-.card-body{
+.page-emergency .card-body{
   line-height: 1.5;
 }
 
-/* Notice (warning) row: centered, icons on both sides */
-.notice-emergency{
+/* Warning notice row */
+.page-emergency .notice-emergency{
   display: flex;
   align-items: center;
-  justify-content: center;   /* centers the whole group */
+  justify-content: center;
   gap: 12px;
   text-align: center;
 }
 
-.notice-emergency .notice-text{
-  flex: 0 1 auto;
+.page-emergency .notice-emergency .notice-text{
   display: flex;
-  flex-direction: column;   /* stack the two lines */
+  flex-direction: column;
   gap: 2px;
-  font-weight: 500;
+  font-weight: 700;
   line-height: 1.2;
 }
 
-/* If you want the icons to match and not stretch */
-.notice-emergency .notice-icon{
-  flex: 0 0 auto;
-}
-
-/* Call 911: centered and bold */
-.callout-911{
+/* Call 911 emphasis */
+.page-emergency .callout-911{
   text-align: center;
   font-size: 34px;
   font-weight: 1000;
   letter-spacing: .8px;
-  margin-left: auto;
-  margin-right: auto;
 }
 
-/* Center the label */
-.label{
+/* Center label + address */
+.page-emergency .label{
   text-align: center;
 }
 
-/* Center and enlarge the address */
-.big-address{
+.page-emergency .big-address{
   text-align: center;
-  font-size: 24px;  /* slightly bigger */
-  font-weight: 500;
+  font-size: 24px;
+  font-weight: 900;
   line-height: 1.2;
-}
-
-/* Force spacing between Emergency cards */
-.emergency-card{
-  margin-bottom: 20px;
-}
-
-/* Remove extra space after the last card */
-.emergency-card:last-child{
-  margin-bottom: 0;
 }

@@ -6,9 +6,12 @@
    Depends on modules.js (window.ER)
    ========================================================= */
 
-// ===============================
-// STATIC Non-Emergency Data
-// ===============================
+
+/* =========================================================
+   Page Data (Static)
+   ========================================================= */
+
+// Emergency Info — Non-emergency numbers (static; no TSV needed)
 const NON_EMERGENCY_LOCATIONS = [
   {
     title: "Hospital",
@@ -33,7 +36,7 @@ const NON_EMERGENCY_LOCATIONS = [
     distance: "1.3 mi (2.1 km)",
     address1: "6554 Mirabel Rd",
     address2: "Forestville, CA 95436"
-  },  
+  },
   {
     title: "Nearest Veterinarian",
     name: "VCA Forestville Animal Hospital",
@@ -57,8 +60,14 @@ const NON_EMERGENCY_LOCATIONS = [
     distance: "National",
     address1: "",
     address2: ""
-  },  
+  },
 ];
+
+
+/* =========================================================
+   Page Initializers
+   Each initializer should NO-OP if its target DOM isn't present.
+   ========================================================= */
 
 function initEmergencyNumbers(rootEl) {
   if (!rootEl) return;
@@ -66,6 +75,7 @@ function initEmergencyNumbers(rootEl) {
   const container = rootEl.querySelector('#nonEmergencyList');
   if (!container) return;
 
+  // Avoid re-injecting after a swipe back/forth
   if (container.dataset.loaded === '1') return;
 
   container.innerHTML = NON_EMERGENCY_LOCATIONS
@@ -74,6 +84,7 @@ function initEmergencyNumbers(rootEl) {
 
   container.dataset.loaded = '1';
 
+  // Wire "Call 911" block
   const call911 = rootEl.querySelector('[data-call911]');
   if (call911) {
     const dial = () => { window.location.href = 'tel:911'; };
@@ -84,7 +95,15 @@ function initEmergencyNumbers(rootEl) {
   }
 }
 
+
+/* =========================================================
+   App Shell: 3-pane navigation + swipe gesture
+   ========================================================= */
+
 (() => {
+  /* -----------------------------
+     Constants / tuning
+     ----------------------------- */
   const SLIDE_MS = 720;       // match CSS --slideMs
   const DETAIL_SHIFT = -12;   // subpage background darker
 
@@ -98,12 +117,18 @@ function initEmergencyNumbers(rootEl) {
   const POS_CENTER = 'translateX(-33.3333%)';
   const POS_RIGHT  = 'translateX(-66.6667%)';
 
+  /* -----------------------------
+     DOM references
+     ----------------------------- */
   const track = document.getElementById('track');
   const screenPrev = document.getElementById('screenPrev');
   const screenCurrent = document.getElementById('screenCurrent');
   const screenNext = document.getElementById('screenNext');
   const globalHomeFab = document.getElementById('globalHomeFab');
 
+  /* -----------------------------
+     Visual helpers
+     ----------------------------- */
   function setTileColors(rootEl) {
     if (!rootEl) return;
     rootEl.querySelectorAll('.tile[data-color]').forEach(tile => {
@@ -127,6 +152,9 @@ function initEmergencyNumbers(rootEl) {
     globalHomeFab.classList.toggle('is-hidden', !isOnSubpage(rootEl));
   }
 
+  /* -----------------------------
+     Motion / interaction helpers
+     ----------------------------- */
   function isReducedMotion() {
     return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   }
@@ -135,6 +163,9 @@ function initEmergencyNumbers(rootEl) {
     document.documentElement.style.pointerEvents = lock ? 'none' : '';
   }
 
+  /* -----------------------------
+     Page loading (fetch + parse)
+     ----------------------------- */
   async function fetchPage(url) {
     const res = await fetch(url, { credentials: 'same-origin' });
     if (!res.ok) throw new Error(`Failed to load ${url}: ${res.status}`);
@@ -150,6 +181,9 @@ function initEmergencyNumbers(rootEl) {
     return { inner, title };
   }
 
+  /* -----------------------------
+     Track control (3-pane)
+     ----------------------------- */
   function setTrack(pos, withTransition = true) {
     if (!track) return;
     track.style.transition = withTransition
@@ -164,6 +198,9 @@ function initEmergencyNumbers(rootEl) {
     if (screenNext) screenNext.innerHTML = '';
   }
 
+  /* -----------------------------
+     Navigation
+     ----------------------------- */
   let inFlight = false;
 
   async function slideTo(url, direction) {
@@ -196,10 +233,12 @@ function initEmergencyNumbers(rootEl) {
         applyDetailBackground(screenPrev);
       }
 
+      // Start centered, then animate to show Prev or Next
       setTrack(POS_CENTER, false);
       setTrack(direction === 'left' ? POS_RIGHT : POS_LEFT, true);
 
       window.setTimeout(() => {
+        // Commit the new current content
         screenCurrent.innerHTML = (direction === 'left')
           ? screenNext.innerHTML
           : screenPrev.innerHTML;
@@ -209,8 +248,10 @@ function initEmergencyNumbers(rootEl) {
         document.title = title;
         history.pushState({}, '', url);
 
+        // Reset to center without visible jump
         setTrack(POS_CENTER, false);
 
+        // Wire events on the newly injected content
         wireHandlers();
 
         lockDuringTransition(false);
@@ -224,7 +265,9 @@ function initEmergencyNumbers(rootEl) {
     }
   }
 
-  // ---------- Swipe-right gesture ----------
+  /* -----------------------------
+     Swipe-right gesture (subpages -> home)
+     ----------------------------- */
   let touchStartX = 0;
   let touchStartY = 0;
   let touchStartT = 0;
@@ -276,9 +319,13 @@ function initEmergencyNumbers(rootEl) {
     el.addEventListener('touchend', onTouchEnd, { passive: true });
   }
 
+  /* -----------------------------
+     Wiring: attach handlers after each swap
+     ----------------------------- */
   function wireHandlers() {
     const rootEl = screenCurrent || document;
 
+    // Home tiles (index.html)
     rootEl.querySelectorAll('a.tile[href]').forEach(a => {
       a.onclick = (e) => {
         e.preventDefault();
@@ -286,6 +333,7 @@ function initEmergencyNumbers(rootEl) {
       };
     });
 
+    // Global Home button
     if (globalHomeFab) {
       globalHomeFab.onclick = (e) => {
         e.preventDefault();
@@ -293,23 +341,34 @@ function initEmergencyNumbers(rootEl) {
       };
     }
 
+    // Visual setup for current screen
     setTileColors(rootEl);
     applyDetailBackground(rootEl);
     updateHomeFabVisibility(rootEl);
 
+    // Gestures
     wireSwipeGesture();
 
-    // Page initializers (safe NO-OP unless page has target elements)
+    // Page initializers (safe NO-OP unless page has target elements)  ------------------------------------------------ When you add a new sub page script, make sure to add the needed line here, Examples below
+    //initEmergencyNumbers(rootEl);
+    //initScoop(rootEl);
+    //initDrivingTour(rootEl);
+
     initEmergencyNumbers(rootEl);
   }
 
+  /* -----------------------------
+     Back/forward support
+     ----------------------------- */
   window.addEventListener('popstate', () => {
     const file = (location.pathname.split('/').pop() || 'index.html');
     const dir = (file === 'index.html') ? 'right' : 'left';
     slideTo(file, dir);
   });
 
-  // INIT
+  /* -----------------------------
+     Init
+     ----------------------------- */
   if (track) setTrack(POS_CENTER, false);
   wireHandlers();
 })();

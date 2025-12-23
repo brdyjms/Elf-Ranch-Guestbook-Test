@@ -8,7 +8,10 @@
 (function () {
   const ER = (window.ER = window.ER || {});
 
-  // ---------- Text / safety ----------
+  /* =========================================================
+     General Utilities
+     ========================================================= */
+
   ER.escapeHtml = function escapeHtml(s) {
     return String(s ?? '')
       .replaceAll('&', '&amp;')
@@ -18,7 +21,10 @@
       .replaceAll("'", '&#39;');
   };
 
-  // ---------- Phone / maps ----------
+  /* =========================================================
+     Phone + Maps Helpers
+     ========================================================= */
+
   ER.normalizePhoneForTel = function normalizePhoneForTel(phone) {
     const trimmed = (phone || '').trim();
     if (!trimmed) return '';
@@ -36,7 +42,10 @@
     return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(full)}`;
   };
 
-  // ---------- Color (optional, used by app.js theming) ----------
+  /* =========================================================
+     Color Helpers (used by app.js theming)
+     ========================================================= */
+
   ER.shiftHex = function shiftHex(hex, percent) {
     const clamp = (v, min, max) => Math.min(max, Math.max(min, v));
     const hexToRgb = (hx) => {
@@ -61,9 +70,12 @@
     return rgbToHex(clamp(nr, 0, 255), clamp(ng, 0, 255), clamp(nb, 0, 255));
   };
 
-  // ---------- Reusable UI: action buttons row ----------
-  // Usage:
-  // ER.renderActionButtons({ phone, address1, address2, ariaLabelBase })
+  /* =========================================================
+     Shared UI Components
+     ========================================================= */
+
+  // Generic phone/map action row (currently emoji icons)
+  // Later you can swap the icon markup here once, and every page updates.
   ER.renderActionButtons = function renderActionButtons({
     phone = '',
     address1 = '',
@@ -77,8 +89,6 @@
     const hasAddr2 = (address2 || '').trim().length > 0;
     const mapHref = (hasAddr1 || hasAddr2) ? ER.mapsSearchLink(address1, address2) : '';
 
-    // Emoji icons keep it simple + consistent with your current styles.
-    // If you want SVG icons later, we can swap them here once and all pages update.
     return `
       <div class="card-actions">
         ${telHref
@@ -93,56 +103,59 @@
     `;
   };
 
-  // ---------- Emergency: card renderer ----------
-ER.renderNonEmergencyCard = function renderNonEmergencyCard(item) {
-  const esc = ER.escapeHtml;
+  /* =========================================================
+     Emergency Page Renderers (uses PNG icons + stacked layout)
+     ========================================================= */
 
-  const hasAddr1 = (item.address1 || '').trim().length > 0;
-  const hasAddr2 = (item.address2 || '').trim().length > 0;
+  ER.renderNonEmergencyCard = function renderNonEmergencyCard(item) {
+    const esc = ER.escapeHtml;
 
-  const tel = ER.normalizePhoneForTel(item.phone);
-  const telHref = tel ? `tel:${tel}` : '';
+    const hasAddr1 = (item.address1 || '').trim().length > 0;
+    const hasAddr2 = (item.address2 || '').trim().length > 0;
 
-  const mapHref = (hasAddr1 || hasAddr2)
-    ? ER.mapsSearchLink(item.address1, item.address2)
-    : '';
+    const tel = ER.normalizePhoneForTel(item.phone);
+    const telHref = tel ? `tel:${tel}` : '';
 
-  const lines = [
-    item.name ? esc(item.name) : '',
-    item.phone ? `Phone: ${esc(item.phone)}` : '',
-    item.distance ? `Distance: ${esc(item.distance)}` : '',
-    hasAddr1 ? esc(item.address1) : '',
-    hasAddr2 ? esc(item.address2) : '',
-  ].filter(Boolean).join('<br>');
+    const mapHref = (hasAddr1 || hasAddr2)
+      ? ER.mapsSearchLink(item.address1, item.address2)
+      : '';
 
-  return `
-    <div class="card emergency-card">
-      <div class="emergency-card-content">
-        <div class="card-title">${esc(item.title || 'Non-Emergency')}</div>
-        <div class="card-body">${lines || '—'}</div>
+    const lines = [
+      item.name ? esc(item.name) : '',
+      item.phone ? `Phone: ${esc(item.phone)}` : '',
+      item.distance ? `Distance: ${esc(item.distance)}` : '',
+      hasAddr1 ? esc(item.address1) : '',
+      hasAddr2 ? esc(item.address2) : '',
+    ].filter(Boolean).join('<br>');
+
+    return `
+      <div class="card emergency-card">
+        <div class="emergency-card-content">
+          <div class="card-title">${esc(item.title || 'Non-Emergency')}</div>
+          <div class="card-body">${lines || '—'}</div>
+        </div>
+
+        <div class="emergency-card-actions">
+          ${telHref ? `
+            <a class="emergency-icon-btn"
+               href="${telHref}"
+               aria-label="Call ${esc(item.name || item.title)}">
+              <img src="Assets/Images/Icons/Icon-Phone.png" alt="Call">
+            </a>
+          ` : ''}
+
+          ${mapHref ? `
+            <a class="emergency-icon-btn"
+               href="${mapHref}"
+               target="_blank"
+               rel="noopener"
+               aria-label="Map ${esc(item.name || item.title)}">
+              <img src="Assets/Images/Icons/Icon-Map.png" alt="Map">
+            </a>
+          ` : ''}
+        </div>
       </div>
-
-      <div class="emergency-card-actions">
-        ${telHref ? `
-          <a class="emergency-icon-btn"
-             href="${telHref}"
-             aria-label="Call ${esc(item.name || item.title)}">
-            <img src="Assets/Images/Icons/Icon-Phone.png" alt="Call">
-          </a>
-        ` : ''}
-
-        ${mapHref ? `
-          <a class="emergency-icon-btn"
-             href="${mapHref}"
-             target="_blank"
-             rel="noopener"
-             aria-label="Map ${esc(item.name || item.title)}">
-            <img src="Assets/Images/Icons/Icon-Map.png" alt="Map">
-          </a>
-        ` : ''}
-      </div>
-    </div>
-  `;
-};
+    `;
+  };
 
 })();
