@@ -1,5 +1,5 @@
 :root{
-  --bg: #0b0f14;
+  --bg: #061222;
   --text: rgba(255,255,255,.92);
   --muted: rgba(255,255,255,.75);
 
@@ -272,4 +272,135 @@ html, body{
 @media (prefers-reduced-motion: reduce){
   .slide-out-left, .slide-in-right, .slide-out-right, .slide-in-left{ animation: none !important; }
   .tile:active, .home-fab:active{ transform: none; }
+}
+
+
+
+/* ==============================
+   Emergency card layout
+   ============================== */
+
+.emergency-card{
+  display: flex;
+  align-items: stretch;
+  gap: 14px;
+}
+
+/* Left side: text content */
+.emergency-card-content{
+  flex: 1;
+  min-width: 0;
+}
+
+/* Right side: stacked actions */
+.emergency-card-actions{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+}
+
+/* Large, thumb-friendly icon buttons */
+.emergency-icon-btn{
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: rgba(0,0,0,.22);
+  border: 1px solid rgba(255,255,255,.18);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  -webkit-tap-highlight-color: transparent;
+}
+
+.emergency-icon-btn img{
+  width: 30px;
+  height: 30px;
+}
+
+.emergency-icon-btn:active{
+  transform: translateY(1px);
+}
+
+
+
+/* ==============================
+   Emergency page layout tweaks
+   ============================== */
+
+/* Spacing between cards */
+.card-list{
+  gap: 20px; /* increased spacing between cards */
+}
+
+/* Card title: slightly bigger, bolder, and separated */
+.card-title{
+  font-size: 17px;
+  font-weight: 900;
+  padding-bottom: 12px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid rgba(255,255,255,.10);
+}
+
+/* Optional: give card body a touch more air */
+.card-body{
+  line-height: 1.5;
+}
+
+/* Notice (warning) row: centered, icons on both sides */
+.notice-emergency{
+  display: flex;
+  align-items: center;
+  justify-content: center;   /* centers the whole group */
+  gap: 12px;
+  text-align: center;
+}
+
+.notice-emergency .notice-text{
+  flex: 0 1 auto;
+  display: flex;
+  flex-direction: column;   /* stack the two lines */
+  gap: 2px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+/* If you want the icons to match and not stretch */
+.notice-emergency .notice-icon{
+  flex: 0 0 auto;
+}
+
+/* Call 911: centered and bold */
+.callout-911{
+  text-align: center;
+  font-size: 34px;
+  font-weight: 1000;
+  letter-spacing: .8px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Center the label */
+.label{
+  text-align: center;
+}
+
+/* Center and enlarge the address */
+.big-address{
+  text-align: center;
+  font-size: 24px;  /* slightly bigger */
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+/* Force spacing between Emergency cards */
+.emergency-card{
+  margin-bottom: 20px;
+}
+
+/* Remove extra space after the last card */
+.emergency-card:last-child{
+  margin-bottom: 0;
 }

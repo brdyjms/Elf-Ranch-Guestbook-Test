@@ -24,8 +24,9 @@
           <section class="page-body">
 
             <!-- IMPORTANT NOTICE -->
-            <div class="notice notice-danger">
+            <div class="notice notice-danger notice-emergency">
               <div class="notice-icon" aria-hidden="true">
+                <!-- same warning svg -->
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
                   <path d="M12 9v5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
                   <path d="M12 17h.01" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
@@ -33,10 +34,23 @@
                         stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
                 </svg>
               </div>
+
               <div class="notice-text">
-                For an immediate response, or when in doubt
+                <div>For an immediate response,</div>
+                <div>or when in doubt</div>
+              </div>
+
+              <div class="notice-icon" aria-hidden="true">
+                <!-- same warning svg again -->
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                  <path d="M12 9v5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  <path d="M12 17h.01" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                  <path d="M10.3 4.2h3.4c.7 0 1.4.4 1.8 1.1l6.4 11.1c.8 1.4-.2 3.1-1.8 3.1H3.7c-1.6 0-2.6-1.7-1.8-3.1l6.4-11.1c.4-.7 1.1-1.1 2-1.1Z"
+                        stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                </svg>
               </div>
             </div>
+
 
             <!-- CALL 911 -->
             <div class="callout-911" role="button" tabindex="0" data-call911>
@@ -83,6 +97,7 @@
 
   </div>
 
+  <script src="modules.js" defer></script>
   <script src="app.js" defer></script>
 </body>
 </html>

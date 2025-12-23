@@ -1,87 +1,100 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Elf Ranch Guestbook</title>
-  <link rel="stylesheet" href="styles.css" />
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>Elf Ranch Guestbook</title>
+	<link rel="stylesheet" href="styles.css" />
 </head>
 
 <body class="theme-dark">
-  <div class="shell">
-    <div class="track" id="track">
-      <!-- PREV -->
-      <div class="screen" id="screenPrev" aria-hidden="true"></div>
+	<div class="shell">
+		<div class="track" id="track">
+			<!-- PREV -->
+			<div class="screen" id="screenPrev" aria-hidden="true"></div>
 
-      <!-- CURRENT -->
-      <div class="screen" id="screenCurrent">
-        <main class="home">
-          <header class="home-header">
-            <h1>Elf Ranch Guestbook</h1>
-          </header>
+			<!-- CURRENT -->
+			<div class="screen" id="screenCurrent">
+				<main class="home">
+					<header class="home-header">
+						<h1>Elf Ranch Guestbook</h1>
+					</header>
 
-          <section class="menu" aria-label="Navigation tiles">
+					<section class="menu" aria-label="Navigation tiles">
 
-            <a class="tile tile-image"
-               href="Scoop.html"
-               style="background-image:url('Assets/Images/Home/Scoop.jpg');">
-              <span>What's The Scoop</span>
-            </a>
+						<a class="tile tile-image"
+							 href="Scoop.html"
+							 style="background-image:url('Assets/Images/Home/Scoop.jpg');">
+							<span>What's The Scoop</span>
+						</a>
 
-            <a class="tile tile-image"
-               href="Local-Eateries.html"
-               style="background-image:url('Assets/Images/Home/Local-Eateries.jpg');">
-              <span>Local Eateries</span>
-            </a>
+						<a class="tile tile-image"
+							 href="Local-Eateries.html"
+							 style="background-image:url('Assets/Images/Home/Local-Eateries.jpg');">
+							<span>Local Eateries</span>
+						</a>
 
-            <a class="tile tile-image"
-               href="Local-Markets.html"
-               style="background-image:url('Assets/Images/Home/Local-Markets.jpg');">
-              <span>Local Markets</span>
-            </a>
+						<a class="tile tile-image"
+							 href="Local-Markets.html"
+							 style="background-image:url('Assets/Images/Home/Local-Markets.jpg');">
+							<span>Local Markets</span>
+						</a>
 
-            <a class="tile tile-image"
-               href="Local-Adventures.html"
-               style="background-image:url('Assets/Images/Home/Local-Adventures.jpg');">
-              <span>Local Adventures</span>
-            </a>
+						<a class="tile tile-image"
+							 href="Local-Adventures.html"
+							 style="background-image:url('Assets/Images/Home/Local-Adventures.jpg');">
+							<span>Local Adventures</span>
+						</a>
 
-            <a class="tile tile-image"
-               href="Wine-Tour.html"
-               style="background-image:url('Assets/Images/Home/Wine-Tour.jpg');">
-              <span>Wine Tour</span>
-            </a>
+						<a class="tile tile-image"
+							 href="Wine-Tour.html"
+							 style="background-image:url('Assets/Images/Home/Wine-Tour.jpg');">
+							<span>Wine Tour</span>
+						</a>
 
-            <a class="tile tile-image"
-               href="Driving-Tour.html"
-               style="background-image:url('Assets/Images/Home/Driving-Tour.jpg');">
-              <span>Driving Tour</span>
-            </a>
+						<a class="tile tile-image"
+							 href="Driving-Tour.html"
+							 style="background-image:url('Assets/Images/Home/Driving-Tour.jpg');">
+							<span>Driving Tour</span>
+						</a>
 
-            <a class="tile tile-image"
-               href="Emergency-Info.html"
-               style="background-image:url('Assets/Images/Home/Emergency-Info.jpg');">
-              <span>Emergency Info</span>
-            </a>
+						<a class="tile tile-image"
+							 href="Essentials-Around-Town.html"
+							 style="background-image:url('Assets/Images/Home/Essentials-Around-Town.jpg');">
+							<span>Essentials Around Town</span>
+						</a>
 
-          </section>
-        </main>
-      </div>
+						<a class="tile tile-image"
+							 href="Emergency-Info.html"
+							 style="background-image:url('Assets/Images/Home/Emergency-Info.jpg');">
+							<span>Emergency Info</span>
+						</a>
 
-      <!-- NEXT -->
-      <div class="screen" id="screenNext" aria-hidden="true"></div>
-    </div>
+						<a class="tile tile-image"
+							 href="Fairy-Tale.html"
+							 style="background-image:url('Assets/Images/Home/Fairy-Tale.jpg');">
+							<span>Fairy Tale</span>
+						</a>
 
-    <!-- Global Home Button -->
-    <button class="home-fab is-hidden" id="globalHomeFab" aria-label="Back to home">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <path d="M3 10.5L12 3l9 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M6.5 10.5V21h11V10.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-      <span>Home</span>
-    </button>
-  </div>
+					</section>
+				</main>
+			</div>
 
-  <script src="app.js" defer></script>
+			<!-- NEXT -->
+			<div class="screen" id="screenNext" aria-hidden="true"></div>
+		</div>
+
+		<!-- Global Home Button -->
+		<button class="home-fab is-hidden" id="globalHomeFab" aria-label="Back to home">
+			<svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+				<path d="M3 10.5L12 3l9 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+				<path d="M6.5 10.5V21h11V10.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+			</svg>
+			<span>Home</span>
+		</button>
+	</div>
+	
+	<script src="modules.js" defer></script>
+	<script src="app.js" defer></script>
 </body>
 </html>
