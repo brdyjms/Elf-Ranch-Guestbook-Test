@@ -10,23 +10,69 @@
 <body class="theme-dark">
   <div class="shell">
     <div class="track" id="track">
+
+      <!-- PREVIOUS SCREEN (filled dynamically) -->
       <div class="screen" id="screenPrev" aria-hidden="true"></div>
 
+      <!-- CURRENT SCREEN -->
       <div class="screen" id="screenCurrent">
-        <main class="page" data-base="#00a8ff">
+        <main class="page" data-base="#f45b69">
           <header class="page-header">
             <h1>Emergency Info</h1>
           </header>
 
           <section class="page-body">
-            <div class="card">Replace this with your content. 5</div>
+
+            <!-- IMPORTANT NOTICE -->
+            <div class="notice notice-danger">
+              <div class="notice-icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                  <path d="M12 9v5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  <path d="M12 17h.01" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                  <path d="M10.3 4.2h3.4c.7 0 1.4.4 1.8 1.1l6.4 11.1c.8 1.4-.2 3.1-1.8 3.1H3.7c-1.6 0-2.6-1.7-1.8-3.1l6.4-11.1c.4-.7 1.1-1.1 2-1.1Z"
+                        stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="notice-text">
+                For an immediate response, or when in doubt
+              </div>
+            </div>
+
+            <!-- CALL 911 -->
+            <div class="callout-911" role="button" tabindex="0" data-call911>
+              Call 911
+            </div>
+
+            <div class="spacer-lg"></div>
+
+            <!-- ADDRESS -->
+            <div class="label">Address for Elf Ranch Guest House</div>
+            <div class="big-address">
+              7361 Covey Rd<br>
+              Forestville, CA 95436
+            </div>
+
+            <div class="spacer-lg"></div>
+
+            <!-- NON-EMERGENCY NUMBERS -->
+            <h2 class="section-heading">Non-Emergency Numbers</h2>
+
+            <!-- Cards injected by app.js -->
+            <div id="nonEmergencyList" class="card-list">
+              <div class="card card-muted">
+                Loading non-emergency numbers…
+              </div>
+            </div>
+
           </section>
         </main>
       </div>
 
+      <!-- NEXT SCREEN (filled dynamically) -->
       <div class="screen" id="screenNext" aria-hidden="true"></div>
     </div>
 
+    <!-- GLOBAL HOME BUTTON -->
     <button class="home-fab is-hidden" id="globalHomeFab" aria-label="Back to home">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
         <path d="M3 10.5L12 3l9 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -34,6 +80,7 @@
       </svg>
       <span>Home</span>
     </button>
+
   </div>
 
   <script src="app.js" defer></script>
