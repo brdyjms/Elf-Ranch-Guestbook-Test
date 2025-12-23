@@ -273,6 +273,8 @@ html, body{
   margin-bottom: 12px;
 }
 
+/* ========================================================================================================================================================== Page Specific CSS  */
+
 
 /* =============================================================================
    Emergency Info Page (scoped)
@@ -378,4 +380,108 @@ html, body{
   font-size: 24px;
   font-weight: 900;
   line-height: 1.2;
+}
+
+
+
+/* =============================================================================
+   Essentials Around Town Page (scoped)
+   ============================================================================= */
+
+.page-essentials .card-list{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* --- Place cards: text left, actions stacked right --- */
+.page-essentials .essentials-card{
+  display: flex;
+  align-items: stretch;
+  gap: 14px;
+}
+
+.page-essentials .essentials-card-content{
+  flex: 1;
+  min-width: 0;
+}
+
+.page-essentials .essentials-card-actions{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+}
+
+/* Large thumb-friendly action icons */
+.page-essentials .essentials-icon-btn{
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: rgba(0,0,0,.22);
+  border: 1px solid rgba(255,255,255,.18);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  -webkit-tap-highlight-color: transparent;
+}
+
+.page-essentials .essentials-icon-btn img{
+  width: 30px;
+  height: 30px;
+}
+
+.page-essentials .essentials-icon-btn:active{
+  transform: translateY(1px);
+}
+
+/* Card title styling (Essentials only) */
+.page-essentials .card-title{
+  font-size: 17px;
+  font-weight: 900;
+  padding-bottom: 12px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid rgba(255,255,255,.10);
+}
+
+.page-essentials .card-body{
+  line-height: 1.5;
+}
+
+/* --- Special web/info card --- */
+.page-essentials .essentials-web-card{
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.page-essentials .essentials-web-content{
+  flex: 1;
+  min-width: 0;
+  line-height: 1.5;
+}
+
+.page-essentials .essentials-web-icon{
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: rgba(0,0,0,.22);
+  border: 1px solid rgba(255,255,255,.18);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  -webkit-tap-highlight-color: transparent;
+}
+
+.page-essentials .essentials-web-icon img{
+  width: 30px;
+  height: 30px;
+}
+
+.page-essentials .essentials-web-icon:active{
+  transform: translateY(1px);
 }

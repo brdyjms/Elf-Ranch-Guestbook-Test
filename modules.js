@@ -103,6 +103,10 @@
     `;
   };
 
+
+/* ========================================================================================================================================================== Page Specific JS  */
+
+
   /* =========================================================
      Emergency Page Renderers (uses PNG icons + stacked layout)
      ========================================================= */
@@ -157,5 +161,120 @@
       </div>
     `;
   };
+
+
+
+
+  /* =========================================================
+     Essentials Around Town Renderers
+     ========================================================= */
+
+  // Renders a place card with stacked phone+map icons on the right
+  ER.renderEssentialsPlaceCard = function renderEssentialsPlaceCard(item) {
+    const esc = ER.escapeHtml;
+
+    const hasAddr1 = (item.address1 || '').trim().length > 0;
+    const hasAddr2 = (item.address2 || '').trim().length > 0;
+
+    const tel = ER.normalizePhoneForTel(item.phone);
+    const telHref = tel ? `tel:${tel}` : '';
+
+    const mapHref = (hasAddr1 || hasAddr2)
+      ? ER.mapsSearchLink(item.address1, item.address2)
+      : '';
+
+    const lines = [
+      item.name ? esc(item.name) : '',
+      item.phone ? `Phone: ${esc(item.phone)}` : '',
+      item.distance ? `Distance: ${esc(item.distance)}` : '',
+      hasAddr1 ? esc(item.address1) : '',
+      hasAddr2 ? esc(item.address2) : '',
+    ].filter(Boolean).join('<br>');
+
+    return `
+      <div class="card essentials-card">
+        <div class="essentials-card-content">
+          <div class="card-title">${esc(item.title || 'Essentials')}</div>
+          <div class="card-body">${lines || '—'}</div>
+        </div>
+
+        <div class="essentials-card-actions">
+          ${telHref ? `
+            <a class="essentials-icon-btn"
+               href="${telHref}"
+               aria-label="Call ${esc(item.name || item.title)}">
+              <img src="Assets/Images/Icons/Icon-Phone.png" alt="Call">
+            </a>
+          ` : ''}
+
+          ${mapHref ? `
+            <a class="essentials-icon-btn"
+               href="${mapHref}"
+               target="_blank"
+               rel="noopener"
+               aria-label="Map ${esc(item.name || item.title)}">
+              <img src="Assets/Images/Icons/Icon-Map.png" alt="Map">
+            </a>
+          ` : ''}
+        </div>
+      </div>
+    `;
+  };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 })();

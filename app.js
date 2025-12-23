@@ -61,7 +61,75 @@ const NON_EMERGENCY_LOCATIONS = [
     address1: "",
     address2: ""
   },
+
 ];
+
+
+// Essentials Around Town — template data (you will replace later)
+const ESSENTIALS_AROUND_TOWN = [
+  {
+    title: "Local Bakery",
+    name: "Nightingale Bakery",
+    phone: "(707) 887-8887",
+    distance: "",
+    address1: "6660 Front St",
+    address2: "Forestville, CA 95436"
+  },
+  {
+    title: "Pharmacy",
+    name: "Forestville Pharmacy",
+    phone: "(707) 887-2260",
+    distance: "",
+    address1: "6652 nFront St",
+    address2: "Forestville, CA 95436"
+  },
+  {
+    title: "Home Store",
+    name: "Ideal Hardware",
+    phone: "(707) 887-7561",
+    distance: "",
+    address1: "6631 Front St",
+    address2: "Forestville, CA 95436"
+  },  
+  {
+    title: "ATM",
+    name: "BMO Bank / ATM",
+    phone: "(707) 887-3320",
+    distance: "",
+    address1: "6661 Front St",
+    address2: "Forestville, CA 95436"
+  },
+  {
+    title: "Laundromat",
+    name: "Forestviclle Laundromat",
+    phone: "",
+    distance: "",
+    address1: "6658 Front St",
+    address2: "Forestville, CA 95436"
+  },
+  {
+    title: "Gas Station",
+    name: "Rotten Robbie Gas Station",
+    phone: "(707) 887-7665",
+    distance: "",
+    address1: "7001 CA-116",
+    address2: "Forestville, CA 95436"
+  },
+  {
+    title: "Mail",
+    name: "Post Office",
+    phone: "(707) 887-2277",
+    distance: "",
+    address1: "6484 Mirabel Rd",
+    address2: "Forestville, CA 95436"
+  },
+
+];
+
+
+
+
+
 
 
 /* =========================================================
@@ -94,6 +162,30 @@ function initEmergencyNumbers(rootEl) {
     });
   }
 }
+
+
+function initEssentialsAroundTown(rootEl) {
+  if (!rootEl) return;
+
+  const container = rootEl.querySelector('#essentialsList');
+  if (!container) return;
+
+  if (container.dataset.loaded === '1') return;
+
+  container.innerHTML = ESSENTIALS_AROUND_TOWN
+    .map(window.ER.renderEssentialsPlaceCard)
+    .join('');
+
+  container.dataset.loaded = '1';
+}
+
+
+
+
+
+
+
+
 
 
 /* =========================================================
@@ -355,6 +447,7 @@ function initEmergencyNumbers(rootEl) {
     //initDrivingTour(rootEl);
 
     initEmergencyNumbers(rootEl);
+    initEssentialsAroundTown(rootEl);
   }
 
   /* -----------------------------
