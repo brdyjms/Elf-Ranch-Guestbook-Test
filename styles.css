@@ -490,10 +490,9 @@ html, body{
 
 
 
-
 /* =============================================================================
    Local Eateries Page (scoped)
-   Expandable photo cards
+   Expandable photo cards (stacked: info card expands, image card pushes down)
    ============================================================================= */
 
 .page-eateries .card-list{
@@ -502,7 +501,7 @@ html, body{
   gap: 20px;
 }
 
-/* Card chrome */
+/* Main card chrome */
 .page-eateries .eatery-card{
   padding: 14px;
   overflow: hidden;
@@ -546,37 +545,48 @@ html, body{
   background: rgba(255,255,255,.10);
 }
 
-/* Stage: photo overlays details; photo slides down when open */
-.page-eateries .eatery-stage{
-  position: relative;
+/* Body (stacked cards) */
+.page-eateries .eatery-body{
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Info "card" (collapsed by default) */
+.page-eateries .eatery-info-card{
   border-radius: 14px;
-  overflow: hidden;
   background: rgba(0,0,0,.18);
   border: 1px solid rgba(255,255,255,.10);
+  overflow: hidden;
+
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(-6px);
+
+  transition:
+    max-height 420ms var(--ease),
+    opacity 220ms var(--ease),
+    transform 420ms var(--ease);
 }
 
-/* Photo fills the stage width; height is consistent */
-.page-eateries .eatery-photo{
-  height: 220px;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-
-  transform: translateY(0);
-  transition: transform 420ms var(--ease);
-  will-change: transform;
-}
-
-/* Details live "behind" the photo */
-.page-eateries .eatery-details{
-  position: absolute;
-  inset: 0;
+/* Padding goes inside so collapse is clean */
+.page-eateries .eatery-info-inner{
   padding: 14px;
+}
+
+/* Expanded state */
+.page-eateries .eatery-card.is-open .eatery-info-card{
+  max-height: 1000px; /* increase if you have very long descriptions */
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Top row inside info card: text + actions */
+.page-eateries .eatery-details-top{
   display: grid;
   grid-template-columns: 1fr auto;
-  grid-template-rows: auto auto;
-  gap: 12px 12px;
-  align-content: start;
+  gap: 12px;
+  align-items: start;
 }
 
 /* Left info column */
@@ -620,9 +630,9 @@ html, body{
   transform: translateY(1px);
 }
 
-/* Description spans full width under info/actions */
+/* Description */
 .page-eateries .eatery-desc{
-  grid-column: 1 / -1;
+  margin-top: 10px;
   font-size: 14px;
   line-height: 1.55;
   color: rgba(255,255,255,.86);
@@ -631,32 +641,24 @@ html, body{
 .page-eateries .eatery-desc p{
   margin: 0 0 10px;
 }
+
 .page-eateries .eatery-desc p:last-child{
   margin-bottom: 0;
 }
 
-/* Open state: slide photo down to reveal details */
-.page-eateries .eatery-stage{
-  --eatery-photo-h: 220px;    /* photo height */
-  --eatery-open-h: 650px;     /* open card height (raise if needed) */
+/* Image "card" */
+.page-eateries .eatery-photo-card{
+  height: 220px;
+  border-radius: 14px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 
-  height: var(--eatery-photo-h);
-  transition: height 420ms var(--ease);
+  background-color: rgba(0,0,0,.18);
+  border: 1px solid rgba(255,255,255,.10);
 }
 
-.page-eateries .eatery-photo{
-  height: var(--eatery-photo-h);
-  transform: translateY(0);
-  transition: transform 420ms var(--ease);
-  will-change: transform;
-}
 
-.page-eateries .eatery-card.is-open .eatery-stage{
-  height: var(--eatery-open-h);
-}
 
-/* slide photo to the bottom of the open stage */
-.page-eateries .eatery-card.is-open .eatery-photo{
-  transform: translateY(calc(var(--eatery-open-h) - var(--eatery-photo-h)));
-}
+
 

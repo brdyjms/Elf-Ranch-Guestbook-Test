@@ -272,37 +272,47 @@ ER.renderLocalEateryCard = function renderLocalEateryCard(item) {
 
       <div class="eatery-divider"></div>
 
-      <div class="eatery-stage">
-        <div class="eatery-details" aria-hidden="true">
-          <div class="eatery-details-left">
-            ${infoLines || '—'}
-          </div>
-
-          <div class="eatery-details-actions">
-            ${telHref ? `
-              <a class="eatery-icon-btn" href="${telHref}" aria-label="Call ${esc(item.title)}">
-                <img src="Assets/Images/Icons/Icon-Phone.png" alt="Call">
-              </a>
-            ` : ''}
-
-            ${mapHref ? `
-              <a class="eatery-icon-btn" href="${mapHref}" target="_blank" rel="noopener" aria-label="Directions to ${esc(item.title)}">
-                <img src="Assets/Images/Icons/Icon-Map.png" alt="Map">
-              </a>
-            ` : ''}
-
-            ${webHref ? `
-              <a class="eatery-icon-btn" href="${esc(webHref)}" target="_blank" rel="noopener" aria-label="Website for ${esc(item.title)}">
-                <img src="Assets/Images/Icons/Icon-Web.png" alt="Web">
-              </a>
-            ` : ''}
-
-          </div>
-
-          <div class="eatery-desc">
-            ${descHtml}
+      <div class="eatery-body">
+      
+        <div class="eatery-info-card" aria-hidden="true">
+          <div class="eatery-info-inner">
+            <div class="eatery-details-top">
+              <div class="eatery-details-left">
+                ${infoLines || '—'}
+              </div>
+      
+              <div class="eatery-details-actions">
+                ${telHref ? `
+                  <a class="eatery-icon-btn" href="${telHref}" aria-label="Call ${esc(item.title)}">
+                    <img src="Assets/Images/Icons/Icon-Phone.png" alt="Call">
+                  </a>
+                ` : ''}
+      
+                ${mapHref ? `
+                  <a class="eatery-icon-btn" href="${mapHref}" target="_blank" rel="noopener" aria-label="      Directions to ${esc(item.title)}">
+                    <img src="Assets/Images/Icons/Icon-Map.png" alt="Map">
+                  </a>
+                ` : ''}
+      
+                ${webHref ? `
+                  <a class="eatery-icon-btn" href="${esc(webHref)}" target="_blank" rel="noopener"       aria-label="Website for ${esc(item.title)}">
+                    <img src="Assets/Images/Icons/Icon-Web.png" alt="Web">
+                  </a>
+                ` : ''}
+              </div>
+            </div>
+      
+            <div class="eatery-desc">
+              ${descHtml}
+            </div>
           </div>
         </div>
+      
+        <div class="eatery-photo-card" role="img" aria-label="${esc(item.title)} photo"
+             style="background-image:url('${esc(item.image || '')}');">
+        </div>
+      
+      </div>
 
         <div class="eatery-photo" role="img" aria-label="${esc(item.title)} photo"
              style="background-image:url('${esc(item.image || '')}');">
@@ -316,26 +326,34 @@ ER.renderLocalEateryCard = function renderLocalEateryCard(item) {
 ER.wireExpandableEateryCards = function wireExpandableEateryCards(container) {
   if (!container) return;
 
+  // Delegate: works for cards injected later too
   container.addEventListener('click', (e) => {
     const card = e.target.closest('[data-eatery-card]');
     if (!card) return;
 
-    // If user tapped a link (phone/map/web), don't toggle the card
-    if (e.target.closest('a.eatery-icon-btn')) return;
+    // Don't toggle if user tapped a link/action button
+    if (e.target.closest('a, button.eatery-icon-btn, a.eatery-icon-btn')) return;
 
-    // Otherwise (including info button), toggle
     card.classList.toggle('is-open');
 
+    // Update aria-hidden on details
     const details = card.querySelector('.eatery-details');
-    if (details) {
-      details.setAttribute(
-        'aria-hidden',
-        card.classList.contains('is-open') ? 'false' : 'true'
-      );
-    }
+    if (details) details.setAttribute('aria-hidden', card.classList.contains('is-open') ? 'false' : 'true');
+  });
+
+  // Info icon specifically toggles too
+  container.addEventListener('click', (e) => {
+    const infoBtn = e.target.closest('.eatery-info-btn');
+    if (!infoBtn) return;
+
+    const card = infoBtn.closest('[data-eatery-card]');
+    if (!card) return;
+
+    card.classList.toggle('is-open');
+    const details = card.querySelector('.eatery-details');
+    if (details) details.setAttribute('aria-hidden', card.classList.contains('is-open') ? 'false' : 'true');
   });
 };
-
 
 
 
