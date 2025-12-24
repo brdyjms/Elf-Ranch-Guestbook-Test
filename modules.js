@@ -326,34 +326,25 @@ ER.renderLocalEateryCard = function renderLocalEateryCard(item) {
 ER.wireExpandableEateryCards = function wireExpandableEateryCards(container) {
   if (!container) return;
 
-  // Delegate: works for cards injected later too
   container.addEventListener('click', (e) => {
     const card = e.target.closest('[data-eatery-card]');
     if (!card) return;
 
-    // Don't toggle if user tapped a link/action button
-    if (e.target.closest('a, button.eatery-icon-btn, a.eatery-icon-btn')) return;
+    // Block toggle only for action links (phone/map/web)
+    if (e.target.closest('a.eatery-icon-btn')) return;
 
     card.classList.toggle('is-open');
 
-    // Update aria-hidden on details
-    const details = card.querySelector('.eatery-details');
-    if (details) details.setAttribute('aria-hidden', card.classList.contains('is-open') ? 'false' : 'true');
-  });
-
-  // Info icon specifically toggles too
-  container.addEventListener('click', (e) => {
-    const infoBtn = e.target.closest('.eatery-info-btn');
-    if (!infoBtn) return;
-
-    const card = infoBtn.closest('[data-eatery-card]');
-    if (!card) return;
-
-    card.classList.toggle('is-open');
-    const details = card.querySelector('.eatery-details');
-    if (details) details.setAttribute('aria-hidden', card.classList.contains('is-open') ? 'false' : 'true');
+    const infoCard = card.querySelector('.eatery-info-card');
+    if (infoCard) {
+      infoCard.setAttribute(
+        'aria-hidden',
+        card.classList.contains('is-open') ? 'false' : 'true'
+      );
+    }
   });
 };
+
 
 
 
