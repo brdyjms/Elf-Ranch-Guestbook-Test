@@ -883,3 +883,273 @@ html, body{
 .page-markets .market-photo-back{
   opacity: 1; /* always visible behind */
 }
+
+
+
+
+
+
+/* =============================================================================
+   Local Adventures Page (scoped)
+   
+   ============================================================================= */
+
+/* =============================================================================
+   Local Adventures Page (scoped)
+   Expandable info + optional shuttle + optional map + slideshow
+   ============================================================================= */
+
+.page-adventures .card-list{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.page-adventures .adv-card{
+  padding: 14px;
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Header */
+.page-adventures .adv-head{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.page-adventures .adv-title{
+  font-size: 17px;
+  font-weight: 900;
+  line-height: 1.1;
+}
+
+.page-adventures .adv-info-btn{
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  background: rgba(0,0,0,.22);
+  border: 1px solid rgba(255,255,255,.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.page-adventures .adv-info-btn img{
+  width: 22px;
+  height: 22px;
+}
+
+.page-adventures .adv-divider{
+  margin: 12px 0;
+  height: 1px;
+  background: rgba(255,255,255,.10);
+}
+
+/* Stack */
+.page-adventures .adv-body{
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Shared “expand in” animation style */
+.page-adventures .adv-info-card,
+.page-adventures .adv-map-card,
+.page-adventures .adv-shuttle-card{
+  border-radius: 14px;
+  background: rgba(0,0,0,.18);
+  border: 1px solid rgba(255,255,255,.10);
+  overflow: hidden;
+
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(-6px);
+
+  transition:
+    max-height 420ms var(--ease),
+    opacity 220ms var(--ease),
+    transform 420ms var(--ease);
+}
+
+/* Expanded */
+.page-adventures .adv-card.is-open .adv-info-card{
+  max-height: 1400px;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.page-adventures .adv-card.is-open .adv-map-card{
+  max-height: 180px;
+  height: 180px;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.page-adventures .adv-card.is-open .adv-shuttle-card{
+  max-height: 220px;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Info card inner */
+.page-adventures .adv-info-inner{
+  padding: 14px;
+}
+
+.page-adventures .adv-details-top{
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  align-items: start;
+}
+
+.page-adventures .adv-details-left{
+  min-width: 0;
+  font-size: 14px;
+  line-height: 1.45;
+  color: rgba(255,255,255,.92);
+}
+
+.page-adventures .adv-k{
+  color: rgba(255,255,255,.75);
+  font-weight: 800;
+}
+
+/* Phone + phone2 formatting */
+.page-adventures .adv-phone{
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 10px;
+  align-items: start;
+}
+
+.page-adventures .adv-phone-lines{
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.page-adventures .adv-phone2{
+  opacity: .85;
+}
+
+/* Action icons */
+.page-adventures .adv-details-actions{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: start;
+}
+
+.page-adventures .adv-icon-btn{
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  background: rgba(0,0,0,.22);
+  border: 1px solid rgba(255,255,255,.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.page-adventures .adv-icon-btn img{
+  width: 28px;
+  height: 28px;
+}
+
+.page-adventures .adv-icon-btn:active{
+  transform: translateY(1px);
+}
+
+/* Description */
+.page-adventures .adv-desc{
+  margin-top: 10px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: rgba(255,255,255,.86);
+}
+
+.page-adventures .adv-desc p{
+  margin: 0 0 10px;
+}
+
+.page-adventures .adv-desc p:last-child{
+  margin-bottom: 0;
+}
+
+/* Shuttle card */
+.page-adventures .adv-shuttle-inner{
+  padding: 14px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  align-items: center;
+}
+
+.page-adventures .adv-shuttle-text{
+  font-size: 14px;
+  line-height: 1.45;
+  color: rgba(255,255,255,.90);
+}
+
+.page-adventures .adv-shuttle-btn{
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  background: rgba(0,0,0,.22);
+  border: 1px solid rgba(255,255,255,.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.page-adventures .adv-shuttle-btn img{
+  width: 28px;
+  height: 28px;
+}
+
+/* Map card (background-image set inline) */
+.page-adventures .adv-map-card{
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* Photo slideshow */
+.page-adventures .adv-photo-card{
+  height: 220px;
+  border-radius: 14px;
+  overflow: hidden;
+  position: relative;
+
+  background-color: rgba(0,0,0,.18);
+  border: 1px solid rgba(255,255,255,.10);
+}
+
+.page-adventures .adv-photo-layer{
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.page-adventures .adv-photo-front{
+  opacity: 1;
+  transition: opacity 1000ms var(--ease);
+  will-change: opacity;
+}
+
+.page-adventures .adv-photo-back{
+  opacity: 1;
+}
+
+
+
+
+
+
+

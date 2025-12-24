@@ -243,7 +243,6 @@ ER.renderLocalEateryCard = function renderLocalEateryCard(item) {
   const webHref = (item.website2 || '').trim();
   const webText = (item.website1 || '').trim();
 
-  // description: treat blank lines as paragraphs
   const desc = String(item.description || '').trim();
   const descHtml = desc
     ? desc.split(/\n\s*\n/g).map(p => `<p>${esc(p)}</p>`).join('')
@@ -258,9 +257,6 @@ ER.renderLocalEateryCard = function renderLocalEateryCard(item) {
     webText ? `<div class="eatery-line"><span class="eatery-k">Web:</span> ${esc(webText)}</div>` : '',
   ].filter(Boolean).join('');
 
-  // NOTE:
-  // - The card toggles open/closed when you tap the card.
-  // - Tapping the action icons should NOT toggle (handled in wireExpandableEateryCards).
   return `
     <article class="card eatery-card" data-eatery-card>
       <header class="eatery-head">
@@ -273,54 +269,49 @@ ER.renderLocalEateryCard = function renderLocalEateryCard(item) {
       <div class="eatery-divider"></div>
 
       <div class="eatery-body">
-      
         <div class="eatery-info-card" aria-hidden="true">
           <div class="eatery-info-inner">
             <div class="eatery-details-top">
               <div class="eatery-details-left">
                 ${infoLines || '—'}
               </div>
-      
+
               <div class="eatery-details-actions">
                 ${telHref ? `
                   <a class="eatery-icon-btn" href="${telHref}" aria-label="Call ${esc(item.title)}">
                     <img src="Assets/Images/Icons/Icon-Phone.png" alt="Call">
                   </a>
                 ` : ''}
-      
+
                 ${mapHref ? `
-                  <a class="eatery-icon-btn" href="${mapHref}" target="_blank" rel="noopener" aria-label="      Directions to ${esc(item.title)}">
+                  <a class="eatery-icon-btn" href="${mapHref}" target="_blank" rel="noopener" aria-label="Directions to ${esc(item.title)}">
                     <img src="Assets/Images/Icons/Icon-Map.png" alt="Map">
                   </a>
                 ` : ''}
-      
+
                 ${webHref ? `
-                  <a class="eatery-icon-btn" href="${esc(webHref)}" target="_blank" rel="noopener"       aria-label="Website for ${esc(item.title)}">
+                  <a class="eatery-icon-btn" href="${esc(webHref)}" target="_blank" rel="noopener" aria-label="Website for ${esc(item.title)}">
                     <img src="Assets/Images/Icons/Icon-Web.png" alt="Web">
                   </a>
                 ` : ''}
+
               </div>
             </div>
-      
+
             <div class="eatery-desc">
               ${descHtml}
             </div>
           </div>
         </div>
-      
-        <div class="eatery-photo-card" role="img" aria-label="${esc(item.title)} photo"
-             style="background-image:url('${esc(item.image || '')}');">
-        </div>
-      
-      </div>
 
-        <div class="eatery-photo" role="img" aria-label="${esc(item.title)} photo"
+        <div class="eatery-photo-card" role="img" aria-label="${esc(item.title)} photo"
              style="background-image:url('${esc(item.image || '')}');">
         </div>
       </div>
     </article>
   `;
 };
+
 
 
 ER.wireExpandableEateryCards = function wireExpandableEateryCards(container) {
@@ -552,13 +543,219 @@ ER.wireMarketSlideshows = function wireMarketSlideshows(container) {
 
 
 
+/* =========================================================
+   Local Adventures Renderers 
+   ========================================================= */
+
+
+ER.renderLocalAdventureCard = function renderLocalAdventureCard(item) {
+  const esc = ER.escapeHtml;
+
+  const tel = ER.normalizePhoneForTel(item.phone);
+  const telHref = tel ? `tel:${tel}` : '';
+
+  const hasAddr1 = (item.address1 || '').trim().length > 0;
+  const hasAddr2 = (item.address2 || '').trim().length > 0;
+
+  const dirHref = (hasAddr1 || hasAddr2)
+    ? ER.mapsSearchLink(item.address1, item.address2)
+    : '';
+
+  const webHref = (item.website2 || '').trim();
+  const webText = (item.website1 || '').trim();
+
+  // Collect slideshow images: image1..imageN
+  const images = [];
+  for (let i = 1; i <= 20; i++) {
+    const key = `image${i}`;
+    if (item[key]) images.push(String(item[key]).trim());
+  }
+  const imagesJson = esc(JSON.stringify(images));
+
+  // description paragraphs
+  const desc = String(item.description || '').trim();
+  const descHtml = desc
+    ? desc.split(/\n\s*\n/g).map(p => `<p>${esc(p)}</p>`).join('')
+    : '<p>—</p>';
+
+  // Phone + phone2 formatting
+  const phoneBlock = item.phone
+    ? `
+      <div class="adv-line adv-phone">
+        <span class="adv-k">Phone:</span>
+        <div class="adv-phone-lines">
+          <div>${esc(item.phone)}</div>
+          ${item.phone2 ? `<div class="adv-phone2">${esc(item.phone2)}</div>` : ''}
+        </div>
+      </div>
+    `
+    : '';
+
+  const infoLines = [
+    phoneBlock,
+    item.hours ? `<div class="adv-line"><span class="adv-k">Hours:</span> ${esc(item.hours)}</div>` : '',
+    item.reservations ? `<div class="adv-line"><span class="adv-k">Reservations:</span> ${esc(item.reservations)}</div>` : '',
+    item.time ? `<div class="adv-line"><span class="adv-k">Time:</span> ${esc(item.time)}</div>` : '',
+    item.distance ? `<div class="adv-line"><span class="adv-k">Distance:</span> ${esc(item.distance)}</div>` : '',
+    item.parking ? `<div class="adv-line"><span class="adv-k">Parking:</span> ${esc(item.parking)}</div>` : '',
+    item.fee ? `<div class="adv-line"><span class="adv-k">Fee:</span> ${esc(item.fee)}</div>` : '',
+    item.dogs ? `<div class="adv-line"><span class="adv-k">Dogs:</span> ${esc(item.dogs)}</div>` : '',
+    item.name ? `<div class="adv-line"><span class="adv-k">Name:</span> ${esc(item.name)}</div>` : '',
+    hasAddr1 ? `<div class="adv-line">${esc(item.address1)}</div>` : '',
+    hasAddr2 ? `<div class="adv-line">${esc(item.address2)}</div>` : '',
+    webText ? `<div class="adv-line"><span class="adv-k">Web:</span> ${esc(webText)}</div>` : '',
+  ].filter(Boolean).join('');
+
+  const mapImg = (item.imagemap || '').trim();
+
+  const hasShuttle = (item.shuttleText && item.shuttleUrl && item.shuttleIcon);
+
+  return `
+    <article class="card adv-card" data-adv-card>
+      <header class="adv-head">
+        <div class="adv-title">${esc(item.title || 'Local Adventure')}</div>
+        <button class="adv-info-btn" type="button" aria-label="Show details">
+          <img src="Assets/Images/Icons/Icon-Info.png" alt="">
+        </button>
+      </header>
+
+      <div class="adv-divider"></div>
+
+      <div class="adv-body">
+        <!-- Info card -->
+        <div class="adv-info-card" aria-hidden="true">
+          <div class="adv-info-inner">
+            <div class="adv-details-top">
+              <div class="adv-details-left">
+                ${infoLines || '—'}
+              </div>
+
+              <div class="adv-details-actions">
+                ${telHref ? `
+                  <a class="adv-icon-btn" href="${telHref}" aria-label="Call ${esc(item.title)}">
+                    <img src="Assets/Images/Icons/Icon-Phone.png" alt="Call">
+                  </a>
+                ` : ''}
+
+                ${dirHref ? `
+                  <a class="adv-icon-btn" href="${dirHref}" target="_blank" rel="noopener" aria-label="Directions to ${esc(item.title)}">
+                    <img src="Assets/Images/Icons/Icon-Map.png" alt="Map">
+                  </a>
+                ` : ''}
+
+                ${webHref ? `
+                  <a class="adv-icon-btn" href="${esc(webHref)}" target="_blank" rel="noopener" aria-label="Website for ${esc(item.title)}">
+                    <img src="Assets/Images/Icons/Icon-Web.png" alt="Web">
+                  </a>
+                ` : ''}
+              </div>
+            </div>
+
+            <div class="adv-desc">
+              ${descHtml}
+            </div>
+          </div>
+        </div>
+
+        <!-- Steelhead shuttle card (ONLY when data present; hidden until expanded by CSS) -->
+        ${hasShuttle ? `
+          <div class="adv-shuttle-card" aria-hidden="true">
+            <div class="adv-shuttle-inner">
+              <div class="adv-shuttle-text">${esc(item.shuttleText)}</div>
+              <a class="adv-shuttle-btn" href="${esc(item.shuttleUrl)}" target="_blank" rel="noopener" aria-label="Shuttle info">
+                <img src="${esc(item.shuttleIcon)}" alt="Shuttle">
+              </a>
+            </div>
+          </div>
+        ` : ''}
+
+        <!-- Map card (only shows when expanded by CSS) -->
+        ${mapImg ? `
+          <div class="adv-map-card" aria-hidden="true" style="background-image:url('${esc(mapImg)}');"></div>
+        ` : ''}
+
+        <!-- Main image card with crossfade slideshow -->
+        <div class="adv-photo-card" data-slideshow="1" data-images="${imagesJson}" aria-label="${esc(item.title)} photos">
+          <div class="adv-photo-layer adv-photo-back"></div>
+          <div class="adv-photo-layer adv-photo-front"></div>
+        </div>
+      </div>
+    </article>
+  `;
+};
 
 
 
 
+ER.wireExpandableAdventureCards = function wireExpandableAdventureCards(container) {
+  if (!container) return;
+
+  container.addEventListener('click', (e) => {
+    const card = e.target.closest('[data-adv-card]');
+    if (!card) return;
+
+    // Don’t toggle if tapping action links or shuttle link
+    if (e.target.closest('a.adv-icon-btn, a.adv-shuttle-btn')) return;
+
+    card.classList.toggle('is-open');
+
+    // aria-hidden updates
+    const infoCard = card.querySelector('.adv-info-card');
+    if (infoCard) infoCard.setAttribute('aria-hidden', card.classList.contains('is-open') ? 'false' : 'true');
+
+    const mapCard = card.querySelector('.adv-map-card');
+    if (mapCard) mapCard.setAttribute('aria-hidden', card.classList.contains('is-open') ? 'false' : 'true');
+
+    const shuttleCard = card.querySelector('.adv-shuttle-card');
+    if (shuttleCard) shuttleCard.setAttribute('aria-hidden', card.classList.contains('is-open') ? 'false' : 'true');
+  });
+};
 
 
 
+
+ER.wireAdventureSlideshows = function wireAdventureSlideshows(container) {
+  if (!container) return;
+
+  const cards = container.querySelectorAll('.adv-photo-card[data-slideshow="1"]');
+  cards.forEach((photoCard) => {
+    let images = [];
+    try { images = JSON.parse(photoCard.getAttribute('data-images') || '[]'); }
+    catch (_) { images = []; }
+
+    if (!images || images.length === 0) return;
+
+    const front = photoCard.querySelector('.adv-photo-front');
+    const back  = photoCard.querySelector('.adv-photo-back');
+    if (!front || !back) return;
+
+    let idx = 0;
+    let nextIdx = images.length > 1 ? 1 : 0;
+
+    front.style.backgroundImage = `url("${images[idx]}")`;
+    back.style.backgroundImage  = `url("${images[nextIdx]}")`;
+    front.style.opacity = '1';
+
+    if (images.length === 1) return;
+
+    const holdMs = 5000;
+    const fadeMs = 1000;
+
+    if (photoCard._slideshowTimer) clearInterval(photoCard._slideshowTimer);
+
+    photoCard._slideshowTimer = setInterval(() => {
+      back.style.backgroundImage = `url("${images[nextIdx]}")`;
+      front.style.opacity = '0';
+
+      window.setTimeout(() => {
+        idx = nextIdx;
+        nextIdx = (idx + 1) % images.length;
+        front.style.backgroundImage = `url("${images[idx]}")`;
+        front.style.opacity = '1';
+      }, fadeMs);
+    }, holdMs);
+  });
+};
 
 
 
