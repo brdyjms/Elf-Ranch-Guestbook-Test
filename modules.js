@@ -223,6 +223,119 @@
 
 
 
+/* =========================================================
+   Local Eateries Renderers (expandable photo card)
+   ========================================================= */
+
+ER.renderLocalEateryCard = function renderLocalEateryCard(item) {
+  const esc = ER.escapeHtml;
+
+  const hasAddr1 = (item.address1 || '').trim().length > 0;
+  const hasAddr2 = (item.address2 || '').trim().length > 0;
+
+  const tel = ER.normalizePhoneForTel(item.phone);
+  const telHref = tel ? `tel:${tel}` : '';
+
+  const mapHref = (hasAddr1 || hasAddr2)
+    ? ER.mapsSearchLink(item.address1, item.address2)
+    : '';
+
+  const webHref = (item.website2 || '').trim();
+  const webText = (item.website1 || '').trim();
+
+  // description: treat blank lines as paragraphs
+  const desc = String(item.description || '').trim();
+  const descHtml = desc
+    ? desc.split(/\n\s*\n/g).map(p => `<p>${esc(p)}</p>`).join('')
+    : '<p>—</p>';
+
+  const infoLines = [
+    item.phone ? `<div class="eatery-line"><span class="eatery-k">Phone:</span> ${esc(item.phone)}</div>` : '',
+    item.hours ? `<div class="eatery-line"><span class="eatery-k">Hours:</span> ${esc(item.hours)}</div>` : '',
+    item.distance ? `<div class="eatery-line"><span class="eatery-k">Distance:</span> ${esc(item.distance)}</div>` : '',
+    hasAddr1 ? `<div class="eatery-line">${esc(item.address1)}</div>` : '',
+    hasAddr2 ? `<div class="eatery-line">${esc(item.address2)}</div>` : '',
+    webText ? `<div class="eatery-line"><span class="eatery-k">Web:</span> ${esc(webText)}</div>` : '',
+  ].filter(Boolean).join('');
+
+  // NOTE:
+  // - The card toggles open/closed when you tap the card.
+  // - Tapping the action icons should NOT toggle (handled in wireExpandableEateryCards).
+  return `
+    <article class="card eatery-card" data-eatery-card>
+      <header class="eatery-head">
+        <div class="eatery-title">${esc(item.title || 'Local Eatery')}</div>
+        <button class="eatery-info-btn" type="button" aria-label="Show details">
+          <img src="Assets/Images/Icons/Icon-Info.png" alt="">
+        </button>
+      </header>
+
+      <div class="eatery-divider"></div>
+
+      <div class="eatery-stage">
+        <div class="eatery-details" aria-hidden="true">
+          <div class="eatery-details-left">
+            ${infoLines || '—'}
+          </div>
+
+          <div class="eatery-details-actions">
+            ${telHref ? `
+              <a class="eatery-icon-btn" href="${telHref}" aria-label="Call ${esc(item.title)}">
+                <img src="Assets/Images/Icons/Icon-Phone.png" alt="Call">
+              </a>
+            ` : ''}
+
+            ${mapHref ? `
+              <a class="eatery-icon-btn" href="${mapHref}" target="_blank" rel="noopener" aria-label="Directions to ${esc(item.title)}">
+                <img src="Assets/Images/Icons/Icon-Map.png" alt="Map">
+              </a>
+            ` : ''}
+
+            ${webHref ? `
+              <a class="eatery-icon-btn" href="${esc(webHref)}" target="_blank" rel="noopener" aria-label="Website for ${esc(item.title)}">
+                <img src="Assets/Images/Icons/Icon-Web.png" alt="Web">
+              </a>
+            ` : ''}
+
+          </div>
+
+          <div class="eatery-desc">
+            ${descHtml}
+          </div>
+        </div>
+
+        <div class="eatery-photo" role="img" aria-label="${esc(item.title)} photo"
+             style="background-image:url('${esc(item.image || '')}');">
+        </div>
+      </div>
+    </article>
+  `;
+};
+
+
+ER.wireExpandableEateryCards = function wireExpandableEateryCards(container) {
+  if (!container) return;
+
+  container.addEventListener('click', (e) => {
+    const card = e.target.closest('[data-eatery-card]');
+    if (!card) return;
+
+    // If user tapped a link (phone/map/web), don't toggle the card
+    if (e.target.closest('a.eatery-icon-btn')) return;
+
+    // Otherwise (including info button), toggle
+    card.classList.toggle('is-open');
+
+    const details = card.querySelector('.eatery-details');
+    if (details) {
+      details.setAttribute(
+        'aria-hidden',
+        card.classList.contains('is-open') ? 'false' : 'true'
+      );
+    }
+  });
+};
+
 
 
 

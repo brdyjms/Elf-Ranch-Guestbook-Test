@@ -486,3 +486,177 @@ html, body{
 .page-essentials .essentials-web-icon:active{
   transform: translateY(1px);
 }
+
+
+
+
+
+/* =============================================================================
+   Local Eateries Page (scoped)
+   Expandable photo cards
+   ============================================================================= */
+
+.page-eateries .card-list{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Card chrome */
+.page-eateries .eatery-card{
+  padding: 14px;
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Header row: title left, info icon right */
+.page-eateries .eatery-head{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.page-eateries .eatery-title{
+  font-size: 17px;
+  font-weight: 900;
+  line-height: 1.1;
+}
+
+.page-eateries .eatery-info-btn{
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  background: rgba(0,0,0,.22);
+  border: 1px solid rgba(255,255,255,.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.page-eateries .eatery-info-btn img{
+  width: 22px;
+  height: 22px;
+}
+
+.page-eateries .eatery-divider{
+  margin: 12px 0;
+  height: 1px;
+  background: rgba(255,255,255,.10);
+}
+
+/* Stage: photo overlays details; photo slides down when open */
+.page-eateries .eatery-stage{
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  background: rgba(0,0,0,.18);
+  border: 1px solid rgba(255,255,255,.10);
+}
+
+/* Photo fills the stage width; height is consistent */
+.page-eateries .eatery-photo{
+  height: 220px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  transform: translateY(0);
+  transition: transform 420ms var(--ease);
+  will-change: transform;
+}
+
+/* Details live "behind" the photo */
+.page-eateries .eatery-details{
+  position: absolute;
+  inset: 0;
+  padding: 14px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto auto;
+  gap: 12px 12px;
+  align-content: start;
+}
+
+/* Left info column */
+.page-eateries .eatery-details-left{
+  min-width: 0;
+  font-size: 14px;
+  line-height: 1.45;
+  color: rgba(255,255,255,.92);
+}
+
+.page-eateries .eatery-k{
+  color: rgba(255,255,255,.75);
+  font-weight: 800;
+}
+
+/* Right action icons */
+.page-eateries .eatery-details-actions{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: start;
+}
+
+.page-eateries .eatery-icon-btn{
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  background: rgba(0,0,0,.22);
+  border: 1px solid rgba(255,255,255,.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.page-eateries .eatery-icon-btn img{
+  width: 28px;
+  height: 28px;
+}
+
+.page-eateries .eatery-icon-btn:active{
+  transform: translateY(1px);
+}
+
+/* Description spans full width under info/actions */
+.page-eateries .eatery-desc{
+  grid-column: 1 / -1;
+  font-size: 14px;
+  line-height: 1.55;
+  color: rgba(255,255,255,.86);
+}
+
+.page-eateries .eatery-desc p{
+  margin: 0 0 10px;
+}
+.page-eateries .eatery-desc p:last-child{
+  margin-bottom: 0;
+}
+
+/* Open state: slide photo down to reveal details */
+.page-eateries .eatery-stage{
+  --eatery-photo-h: 220px;    /* photo height */
+  --eatery-open-h: 650px;     /* open card height (raise if needed) */
+
+  height: var(--eatery-photo-h);
+  transition: height 420ms var(--ease);
+}
+
+.page-eateries .eatery-photo{
+  height: var(--eatery-photo-h);
+  transform: translateY(0);
+  transition: transform 420ms var(--ease);
+  will-change: transform;
+}
+
+.page-eateries .eatery-card.is-open .eatery-stage{
+  height: var(--eatery-open-h);
+}
+
+/* slide photo to the bottom of the open stage */
+.page-eateries .eatery-card.is-open .eatery-photo{
+  transform: translateY(calc(var(--eatery-open-h) - var(--eatery-photo-h)));
+}
+

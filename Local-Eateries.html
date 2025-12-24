@@ -10,23 +10,30 @@
 <body class="theme-dark">
   <div class="shell">
     <div class="track" id="track">
+
+      <!-- PREVIOUS SCREEN (filled dynamically) -->
       <div class="screen" id="screenPrev" aria-hidden="true"></div>
 
+      <!-- CURRENT SCREEN -->
       <div class="screen" id="screenCurrent">
-        <main class="page" data-base="#f45b69">
+        <main class="page page-eateries" data-base="#a27976">
           <header class="page-header">
             <h1>Local Eateries</h1>
           </header>
 
           <section class="page-body">
-            <div class="card">Replace this with your content. 5</div>
+            <div id="localEateriesList" class="card-list">
+              <div class="card card-muted">Loading eateries…</div>
+            </div>
           </section>
         </main>
       </div>
 
+      <!-- NEXT SCREEN (filled dynamically) -->
       <div class="screen" id="screenNext" aria-hidden="true"></div>
     </div>
 
+    <!-- GLOBAL HOME BUTTON -->
     <button class="home-fab is-hidden" id="globalHomeFab" aria-label="Back to home">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
         <path d="M3 10.5L12 3l9 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -34,6 +41,7 @@
       </svg>
       <span>Home</span>
     </button>
+
   </div>
 
   <script src="modules.js" defer></script>

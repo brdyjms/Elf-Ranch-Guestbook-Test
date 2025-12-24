@@ -127,6 +127,71 @@ const ESSENTIALS_AROUND_TOWN = [
 ];
 
 
+// Local Eateries — starter data
+const LOCAL_EATERIES = [
+  {
+    title: "Sonoma Pizza Co",
+    phone: "(707) 820-1031",
+    hours: "11:00 - 8:00 (WTFSS)",
+    distance: "1.3 mi (2.1 km)",
+    address1: "6615 Front St",
+    address2: "Forestville, CA 95436",
+    website1: "SonomaPizzaCo.com",
+    website2: "https://www.sonomapizzaco.com/",
+    image: "Assets/Images/Local/Sonoma-Pizza-Co.jpg",
+    description:
+      "Local, organic, the very best of everything.\n\n" +
+      "The art of pizza is a craft to be loved and approached as a never ending pursuit of perfection. " +
+      "We pride ourselves on using the finest organic ingredients from local farms and the very best vendors."
+  },
+  {
+    title: "Farmhouse Inn",
+    phone: "(707) 887-3300",
+    hours: "12:00 - 8:00 (TFSS)",
+    distance: "0.9 mi (1.4 km)",
+    address1: "7871 River Rd",
+    address2: "Forestville, CA 95436",
+    website1: "FarmHouseInn.com",
+    website2: "https://www.farmhouseinn.com/",
+    image: "Assets/Images/Local/Farmhouse-Inn.jpg",
+    description:
+      "What happens when two fifth-generation Sonoma farmers, a world-class maitre d’ and a team of sommeliers conspire?\n\n" +
+      "Some call it magic…We call it Farmhouse Inn. Our restaurant has long been the cornerstone of our hotel.\n\n" +
+      "Let us take you on a culinary journey, bite-by-bite, through the beautiful territory of Sonoma County."
+  },
+
+  {
+    title: "Canneti's",
+    phone: "(707) 887-2232",
+    hours: "Variable (Closed Monday)",
+    distance: "1.3 mi (2.1 km)",
+    address1: "6675 Front St",
+    address2: "Forestville, CA 95436",
+    website1: "CannetiRoadhouse.com",
+    website2: "https://cannetiroadhouse.com/",
+    image: "Assets/Images/Local/Canneti.jpg",
+    description:
+      "“Canneti is the name of a road I used to walk to go from my parents’ house to elementary school.  I had a dream for a very long time, and when I moved to California years ago, I named that dream Canneti.  Here it is alive with its custom made rustic tables and stools, refinished wood counters and a Tuscan Country flair.  My cucina is a mix of many experiences, from a Relais & Chateaux two Michelin "
+  },
+
+  {
+    title: "Russian River Vineyards",
+    phone: "(707) 887-2232",
+    hours: "12:00 - 5:00",
+    distance: "1.9 mi (3.1 km)",
+    address1: "5700 California N116",
+    address2: "Forestville, CA 95436",
+    website1: "RussianRiverVineyards.com",
+    website2: "https://www.russianrivervineyards.com/",
+    image: "Assets/Images/Local/Russian-River-Vineyards.jpg",
+    description:
+      "Russian River Vineyards has been a Forestville hot spot forever. Their unique food pairings with delectable wine is one of a kind. Outdoor musical events during the summer. Outdoor Dog Friendly."
+  },
+
+
+
+
+];
 
 
 
@@ -180,6 +245,23 @@ function initEssentialsAroundTown(rootEl) {
 }
 
 
+function initLocalEateries(rootEl) {
+  if (!rootEl) return;
+
+  const container = rootEl.querySelector('#localEateriesList');
+  if (!container) return;
+
+  if (container.dataset.loaded === '1') return;
+
+  container.innerHTML = LOCAL_EATERIES
+    .map(window.ER.renderLocalEateryCard)
+    .join('');
+
+  container.dataset.loaded = '1';
+
+  // Wire expand/collapse behavior
+  window.ER.wireExpandableEateryCards(container);
+}
 
 
 
@@ -448,6 +530,8 @@ function initEssentialsAroundTown(rootEl) {
 
     initEmergencyNumbers(rootEl);
     initEssentialsAroundTown(rootEl);
+    initLocalEateries(rootEl); // <-- add this
+
   }
 
   /* -----------------------------
