@@ -352,9 +352,201 @@ ER.wireExpandableEateryCards = function wireExpandableEateryCards(container) {
 
 
 
+/* =========================================================
+   Local Markets Renderers (expandable photo card)
+   ========================================================= */
+
+
+ER.renderLocalMarketCard = function renderLocalMarketCard(item) {
+  const esc = ER.escapeHtml;
+
+  const tel = ER.normalizePhoneForTel(item.phone);
+  const telHref = tel ? `tel:${tel}` : '';
+
+  const hasAddr1 = (item.address1 || '').trim().length > 0;
+  const hasAddr2 = (item.address2 || '').trim().length > 0;
+
+  const mapHref = (hasAddr1 || hasAddr2)
+    ? ER.mapsSearchLink(item.address1, item.address2)
+    : '';
+
+  const webHref = (item.website2 || '').trim();
+  const webText = (item.website1 || '').trim();
+
+  const desc = String(item.description || '').trim();
+  const descHtml = desc
+    ? desc.split(/\n\s*\n/g).map(p => `<p>${esc(p)}</p>`).join('')
+    : '<p>—</p>';
+
+  // Collect slideshow images: image1..imageN
+  const images = [];
+  for (let i = 1; i <= 20; i++) {
+    const key = `image${i}`;
+    if (item[key]) images.push(String(item[key]).trim());
+  }
+  const imagesJson = esc(JSON.stringify(images));
+
+  const infoLines = [
+    item.phone ? `<div class="market-line"><span class="market-k">Phone:</span> ${esc(item.phone)}</div>` : '',
+    item.hours ? `<div class="market-line"><span class="market-k">Hours:</span> ${esc(item.hours)}</div>` : '',
+    item.distance ? `<div class="market-line"><span class="market-k">Distance:</span> ${esc(item.distance)}</div>` : '',
+    hasAddr1 ? `<div class="market-line">${esc(item.address1)}</div>` : '',
+    hasAddr2 ? `<div class="market-line">${esc(item.address2)}</div>` : '',
+    webText ? `<div class="market-line"><span class="market-k">Web:</span> ${esc(webText)}</div>` : '',
+  ].filter(Boolean).join('');
+
+  const mapImg = (item.imagemap || '').trim();
+
+  return `
+    <article class="card market-card" data-market-card>
+      <header class="market-head">
+        <div class="market-title">${esc(item.title || 'Local Market')}</div>
+        <button class="market-info-btn" type="button" aria-label="Show details">
+          <img src="Assets/Images/Icons/Icon-Info.png" alt="">
+        </button>
+      </header>
+
+      <div class="market-divider"></div>
+
+      <div class="market-body">
+        <!-- Info card (collapsed by default) -->
+        <div class="market-info-card" aria-hidden="true">
+          <div class="market-info-inner">
+            <div class="market-details-top">
+              <div class="market-details-left">
+                ${infoLines || '—'}
+              </div>
+
+              <div class="market-details-actions">
+                ${telHref ? `
+                  <a class="market-icon-btn" href="${telHref}" aria-label="Call ${esc(item.title)}">
+                    <img src="Assets/Images/Icons/Icon-Phone.png" alt="Call">
+                  </a>
+                ` : ''}
+
+                ${mapHref ? `
+                  <a class="market-icon-btn" href="${mapHref}" target="_blank" rel="noopener" aria-label="Directions to ${esc(item.title)}">
+                    <img src="Assets/Images/Icons/Icon-Map.png" alt="Map">
+                  </a>
+                ` : ''}
+
+                ${webHref ? `
+                  <a class="market-icon-btn" href="${esc(webHref)}" target="_blank" rel="noopener" aria-label="Website for ${esc(item.title)}">
+                    <img src="Assets/Images/Icons/Icon-Web.png" alt="Web">
+                  </a>
+                ` : ''}
+              </div>
+            </div>
+
+            <div class="market-desc">
+              ${descHtml}
+            </div>
+          </div>
+        </div>
+
+        <!-- NEW: Map image card (only meaningful when expanded, but we can show it always) -->
+        ${mapImg ? `
+          <div class="market-map-card" aria-label="${esc(item.title)} map"
+               style="background-image:url('${esc(mapImg)}');">
+          </div>
+        ` : ''}
+
+        <!-- Main image card with crossfade slideshow -->
+        <div class="market-photo-card" data-slideshow="1" data-images="${imagesJson}"
+             aria-label="${esc(item.title)} photos">
+          <div class="market-photo-layer market-photo-back"></div>
+          <div class="market-photo-layer market-photo-front"></div>
+        </div>
+      </div>
+    </article>
+  `;
+};
 
 
 
+
+
+
+
+ER.wireExpandableMarketCards = function wireExpandableMarketCards(container) {
+  if (!container) return;
+
+  container.addEventListener('click', (e) => {
+    const card = e.target.closest('[data-market-card]');
+    if (!card) return;
+
+    // Don't toggle when tapping action links (phone/map/web)
+    if (e.target.closest('a.market-icon-btn')) return;
+
+    card.classList.toggle('is-open');
+
+    const infoCard = card.querySelector('.market-info-card');
+    if (infoCard) {
+      infoCard.setAttribute(
+        'aria-hidden',
+        card.classList.contains('is-open') ? 'false' : 'true'
+      );
+    }
+  });
+};
+
+
+
+
+
+
+
+ER.wireMarketSlideshows = function wireMarketSlideshows(container) {
+  if (!container) return;
+
+  const cards = container.querySelectorAll('.market-photo-card[data-slideshow="1"]');
+  cards.forEach((photoCard) => {
+    let images = [];
+    try {
+      images = JSON.parse(photoCard.getAttribute('data-images') || '[]');
+    } catch (_) { images = []; }
+
+    // No slideshow needed
+    if (!images || images.length === 0) return;
+
+    const front = photoCard.querySelector('.market-photo-front');
+    const back  = photoCard.querySelector('.market-photo-back');
+    if (!front || !back) return;
+
+    let idx = 0;
+    let nextIdx = images.length > 1 ? 1 : 0;
+
+    // Initial state: back is next, front is current
+    front.style.backgroundImage = `url("${images[idx]}")`;
+    back.style.backgroundImage  = `url("${images[nextIdx]}")`;
+    front.style.opacity = '1';
+
+    if (images.length === 1) return;
+
+    const holdMs = 5000;
+    const fadeMs = 1000;
+
+    // Prevent double-start if re-wired
+    if (photoCard._slideshowTimer) clearInterval(photoCard._slideshowTimer);
+
+    photoCard._slideshowTimer = setInterval(() => {
+      // Ensure back has the next image fully visible
+      back.style.backgroundImage = `url("${images[nextIdx]}")`;
+
+      // Crossfade: fade front out revealing back (already at 100%)
+      front.style.opacity = '0';
+
+      // After fade, swap front to the new current and reset opacity
+      window.setTimeout(() => {
+        idx = nextIdx;
+        nextIdx = (idx + 1) % images.length;
+
+        front.style.backgroundImage = `url("${images[idx]}")`;
+        front.style.opacity = '1';
+      }, fadeMs);
+    }, holdMs);
+  });
+};
 
 
 

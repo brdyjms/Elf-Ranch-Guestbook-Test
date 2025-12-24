@@ -188,10 +188,77 @@ const LOCAL_EATERIES = [
       "Russian River Vineyards has been a Forestville hot spot forever. Their unique food pairings with delectable wine is one of a kind. Outdoor musical events during the summer. Outdoor Dog Friendly."
   },
 
-
-
-
 ];
+
+
+// Local Markets — starter data
+const LOCAL_MARKETS = [
+  {
+    title: "Speer's Market",
+    phone: "(707) 887-2024",
+    hours: "8:00 - 8:00",
+    distance: "0.8 mi (1.3 km)",
+    address1: "7891 Mirabel Rd",
+    address2: "Forestville, CA 95436",
+    website1: "SpeersMarket.com",
+    website2: "https://www.speersmarket.com/",
+    image1: "Assets/Images/Local/Speers-Market-1.jpg",
+    image2: "Assets/Images/Local/Speers-Market-2.jpg",
+    image3: "Assets/Images/Local/Speers-Market-3.jpg",
+    image4: "Assets/Images/Local/Speers-Market-4.jpg",
+    imagemap: "Assets/Images/Maps/Elf-to-Speers.jpg",
+    description:
+      "Great Corner Market! Wine, Produce & Deli! VERY Close by.\n\n" +
+      "Located at the crossing of Mirabel and Trenton roads, it’s just moments away. Their wine and deli selections will send you on any adventure with a smile. " +
+      "This small local market has easy parking, close to all the River action, and has been serving our community for the past 40 years."
+  },
+  {
+    title: "Andy's Market",
+    phone: "(707) 823-8661",
+    hours: "8:00 - 8:00 (TFSS)",
+    distance: "5.6 mi (9.0 km)",
+    address1: "1691 N. Gravenstein",
+    address2: "Sebastopol, CA 95472",
+    website1: "AndysProduce.com",
+    website2: "https://andysproduce.com/",
+    image1: "Assets/Images/Local/Andys-Market-1.jpg",
+    image2: "Assets/Images/Local/Andys-Market-2.jpg",
+    imagemap: "Assets/Images/Maps/Elf-to-Andys.jpg",
+    description:
+      "Andy’s Produce Market takes pride in providing our community the freshest, highest quality fruits and vegetables around. " +
+      "They focus on buying local and support neighboring family farms.\n\n" +
+      "There is no other fruit/vegetable experience quite like Andy’s. You can find locally made dairy products, artisan breads, and many unique grocery items at Andy’s. " +
+      "It’s worth the stop if you are a fresh foods fanatic."
+  },
+];
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -262,6 +329,31 @@ function initLocalEateries(rootEl) {
   // Wire expand/collapse behavior
   window.ER.wireExpandableEateryCards(container);
 }
+
+
+function initLocalMarkets(rootEl) {
+  if (!rootEl) return;
+
+  const container = rootEl.querySelector('#localMarketsList');
+  if (!container) return;
+
+  if (container.dataset.loaded === '1') return;
+
+  container.innerHTML = LOCAL_MARKETS
+    .map(window.ER.renderLocalMarketCard)
+    .join('');
+
+  container.dataset.loaded = '1';
+
+  window.ER.wireExpandableMarketCards(container);
+  window.ER.wireMarketSlideshows(container);
+}
+
+
+
+
+
+
 
 
 
@@ -531,6 +623,7 @@ function initLocalEateries(rootEl) {
     initEmergencyNumbers(rootEl);
     initEssentialsAroundTown(rootEl);
     initLocalEateries(rootEl); // <-- add this
+    initLocalMarkets(rootEl);
 
   }
 

@@ -662,3 +662,224 @@ html, body{
 
 
 
+/* =============================================================================
+   Local Markets Page (scoped)
+   Expandable info card + map card + crossfade slideshow
+   ============================================================================= */
+
+.page-markets .card-list{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Main card chrome */
+.page-markets .market-card{
+  padding: 14px;
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Header row */
+.page-markets .market-head{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.page-markets .market-title{
+  font-size: 17px;
+  font-weight: 900;
+  line-height: 1.1;
+}
+
+.page-markets .market-info-btn{
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  background: rgba(0,0,0,.22);
+  border: 1px solid rgba(255,255,255,.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.page-markets .market-info-btn img{
+  width: 22px;
+  height: 22px;
+}
+
+.page-markets .market-divider{
+  margin: 12px 0;
+  height: 1px;
+  background: rgba(255,255,255,.10);
+}
+
+/* Body stack */
+.page-markets .market-body{
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Info card (collapsed by default) */
+.page-markets .market-info-card{
+  border-radius: 14px;
+  background: rgba(0,0,0,.18);
+  border: 1px solid rgba(255,255,255,.10);
+  overflow: hidden;
+
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(-6px);
+
+  transition:
+    max-height 420ms var(--ease),
+    opacity 220ms var(--ease),
+    transform 420ms var(--ease);
+}
+
+.page-markets .market-info-inner{
+  padding: 14px;
+}
+
+/* Expanded */
+.page-markets .market-card.is-open .market-info-card{
+  max-height: 1200px;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Info layout */
+.page-markets .market-details-top{
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  align-items: start;
+}
+
+.page-markets .market-details-left{
+  min-width: 0;
+  font-size: 14px;
+  line-height: 1.45;
+  color: rgba(255,255,255,.92);
+}
+
+.page-markets .market-k{
+  color: rgba(255,255,255,.75);
+  font-weight: 800;
+}
+
+.page-markets .market-details-actions{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: start;
+}
+
+.page-markets .market-icon-btn{
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  background: rgba(0,0,0,.22);
+  border: 1px solid rgba(255,255,255,.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.page-markets .market-icon-btn img{
+  width: 28px;
+  height: 28px;
+}
+
+.page-markets .market-icon-btn:active{
+  transform: translateY(1px);
+}
+
+/* Description */
+.page-markets .market-desc{
+  margin-top: 10px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: rgba(255,255,255,.86);
+}
+
+.page-markets .market-desc p{
+  margin: 0 0 10px;
+}
+
+.page-markets .market-desc p:last-child{
+  margin-bottom: 0;
+}
+
+/* Map card (hidden until expanded) */
+.page-markets .market-map-card{
+  border-radius: 14px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  background-color: rgba(0,0,0,.18);
+  border: 1px solid rgba(255,255,255,.10);
+  overflow: hidden;
+
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(-6px);
+
+  transition:
+    max-height 420ms var(--ease),
+    opacity 220ms var(--ease),
+    transform 420ms var(--ease);
+}
+
+/* Expanded */
+.page-markets .market-card.is-open .market-map-card{
+  max-height: 180px;
+  height: 180px;          /* <-- add this */
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+
+
+/* Expanded */
+.page-markets .market-card.is-open .market-map-card{
+  max-height: 180px;  /* map card height */
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+/* Main photo card (slideshow) */
+.page-markets .market-photo-card{
+  height: 220px;
+  border-radius: 14px;
+  overflow: hidden;
+  position: relative;
+
+  background-color: rgba(0,0,0,.18);
+  border: 1px solid rgba(255,255,255,.10);
+}
+
+.page-markets .market-photo-layer{
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.page-markets .market-photo-front{
+  opacity: 1;
+  transition: opacity 1000ms var(--ease);
+  will-change: opacity;
+}
+
+.page-markets .market-photo-back{
+  opacity: 1; /* always visible behind */
+}
