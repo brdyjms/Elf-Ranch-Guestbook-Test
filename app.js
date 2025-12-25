@@ -768,13 +768,13 @@ function initWineTour(rootEl){
 
 
     // Phone
-    const tel = window.ER?.normalizePhoneForTel
+    const tel = (window.ER && window.ER.normalizePhoneForTel)
       ? window.ER.normalizePhoneForTel(info.phone)
       : String(info.phone || '').replace(/[^\d+]/g, '');
     const telHref = tel ? `tel:${tel}` : '';
 
     // Map
-    const mapHref = window.ER?.mapsSearchLink
+    const mapHref = (window.ER && window.ER.mapsSearchLink)
       ? window.ER.mapsSearchLink(info.address1, info.address2)
       : '';
 
@@ -913,8 +913,10 @@ function initWineTour(rootEl){
     if (!rootEl) return;
     const page = rootEl.querySelector('.page[data-base]');
     if (!page) return;
-    page.style.background = window.ER.shiftHex(page.dataset.base, DETAIL_SHIFT);
-  }
+    if (window.ER && typeof window.ER.shiftHex === 'function') {
+      page.style.background = window.ER.shiftHex(page.dataset.base, DETAIL_SHIFT);
+    }
+}
 
   function isOnSubpage(rootEl) {
     return !!(rootEl && rootEl.querySelector('.page'));
@@ -950,7 +952,8 @@ function initWineTour(rootEl){
     const incomingCurrent = doc.querySelector('#screenCurrent');
     if (!incomingCurrent) throw new Error('Incoming page missing #screenCurrent');
     const inner = incomingCurrent.innerHTML;
-    const title = doc.querySelector('title')?.textContent?.trim() || document.title;
+    const titleEl = doc.querySelector('title');
+    const title = (titleEl && titleEl.textContent) ? titleEl.textContent.trim() : document.title;
     return { inner, title };
   }
 
