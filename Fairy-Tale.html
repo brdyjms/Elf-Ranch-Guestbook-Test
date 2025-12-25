@@ -6,90 +6,7 @@
   <title>Fairy Tale</title>
   <link rel="stylesheet" href="styles.css" />
 
-  <!-- Page-scoped styles (you can also move this into styles.css if you prefer) -->
-  <style>
-    /* Load custom font */
-    @font-face{
-      font-family: "HolaSophia";
-      src: url("/Assets/Images/Fonts/Hola-Sophia.ttf") format("truetype");
-      font-weight: 400;
-      font-style: normal;
-      font-display: swap;
-    }
 
-    /* Fairy Tale page background + typography */
-    .page-fairytale{
-      /* Dark enchanted-forest gradient */
-      background:
-        radial-gradient(900px 600px at 20% 15%, rgba(120, 255, 210, 0.12), rgba(0,0,0,0) 55%),
-        radial-gradient(800px 520px at 85% 35%, rgba(140, 120, 255, 0.12), rgba(0,0,0,0) 55%),
-        radial-gradient(900px 620px at 45% 85%, rgba(0, 255, 140, 0.10), rgba(0,0,0,0) 55%),
-        linear-gradient(180deg, #07140f 0%, #081a14 35%, #061116 70%, #050a10 100%);
-    }
-
-    .page-fairytale .page-body{
-      padding: 18px 16px 28px;
-    }
-
-    .fairy-wrap{
-      max-width: 680px;
-      margin: 0 auto;
-      padding: 18px 18px 8px;
-      border-radius: 18px;
-      background: rgba(0,0,0,0.18);
-      border: 1px solid rgba(255,255,255,0.12);
-    }
-
-    .fairy-title{
-      font-family: "HolaSophia", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      font-size: 28px;
-      line-height: 1.1;
-      margin: 2px 0 14px;
-      color: rgba(255,255,255,0.95);
-      letter-spacing: 0.2px;
-    }
-
-    .fairy-text p{
-      font-family: "HolaSophia", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      font-size: 18px;
-      line-height: 1.65;
-      margin: 0 0 16px;
-      color: rgba(255,255,255,0.92);
-      font-weight: 400;
-    }
-
-    /* Drop cap (first letter grows to multiple lines) */
-    .fairy-text p::first-letter{
-      float: left;
-      font-size: 56px;
-      line-height: 0.92;
-      padding: 8px 10px 0 0;
-      margin: 0;
-      color: rgba(255,255,255,0.98);
-      text-shadow: 0 0 18px rgba(120,255,210,0.18), 0 0 22px rgba(140,120,255,0.14);
-    }
-
-    /* Optional: slightly tighten on very small screens */
-    @media (max-width: 380px){
-      .fairy-text p{ font-size: 17px; }
-      .fairy-text p::first-letter{ font-size: 52px; }
-    }
-
-    /* Fairy Tale: force gradient background (override base color) */
-    .page.page-fairytale{
-    background-image:
-        radial-gradient(900px 600px at 20% 15%, rgba(120, 255, 210, 0.12), rgba(0,0,0,0) 55%),
-        radial-gradient(800px 520px at 85% 35%, rgba(140, 120, 255, 0.12), rgba(0,0,0,0) 55%),
-        radial-gradient(900px 620px at 45% 85%, rgba(0, 255, 140, 0.10), rgba(0,0,0,0) 55%),
-        linear-gradient(180deg, #07140f 0%, #081a14 35%, #061116 70%, #050a10 100%) !important;
-
-    background-color: #050a10 !important; /* fallback */
-    background-attachment: fixed;
-    background-repeat: no-repeat;
-    background-size: cover;
-    }
-
-  </style>
 </head>
 
 <body class="theme-dark">
@@ -98,7 +15,7 @@
       <div class="screen" id="screenPrev" aria-hidden="true"></div>
 
       <div class="screen" id="screenCurrent">
-        <main class="page page-fairytale" data-base="#6c5ce7">
+        <main class="page page-fairytale" data-base="#050a10">
           <header class="page-header">
             <h1>Fairy Tale</h1>
           </header>

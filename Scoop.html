@@ -2,7 +2,22 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport"
+        content="width=device-width,
+                 initial-scale=1,
+                 maximum-scale=1,
+                 user-scalable=no,
+                 viewport-fit=cover">
+
+  <!-- iOS -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Elf Ranch">
+
+  <!-- Android -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#061222">
   <title>What's The Scoop</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
@@ -23,11 +38,20 @@
             <!-- Individual info cards -->
             <div class="card">Remotes for TV, AC/Heat, and Apple TV are on the table.</div>
 
-            <div class="card">
-              Hot Tub is set to <strong>101°</strong>. Feel free to adjust.
-              <br><br>
-              See QR code for detailed instructions.
+            <div class="card scoop-card-with-icon">
+              <div class="scoop-card-content">
+                Hot Tub is set to <strong>101°</strong>. Feel free to adjust.
+                <br><br>
+                Press Icon for detailed instructions
+              </div>
+
+              <div class="scoop-card-action">
+                <a href="https://example.com" aria-label="Hot Tub Instructions">
+                  <img src="Assets/Images/Icons/Icon-PlayVideo.png" alt="Play Video">
+                </a>
+              </div>
             </div>
+
 
             <div class="card">Parking: Please park in front of the sign.</div>
 
@@ -120,11 +144,20 @@
               There’s a fold-out ironing board behind the big door in the stove.
             </div>
 
-            <div class="card">
-              Heat/AC remote is line-of-sight.
-              <br><br>
-              See QR code for more detailed instructions.
+            <div class="card scoop-card-with-icon">
+              <div class="scoop-card-content">
+                Heat/AC remote is line-of-sight.
+                <br><br>
+                Press Icon for detailed instructions
+              </div>
+
+              <div class="scoop-card-action">
+                <a href="https://example.com" aria-label="Heat and AC Instructions">
+                  <img src="Assets/Images/Icons/Icon-PlayVideo.png" alt="Play Video">
+                </a>
+              </div>
             </div>
+
 
             <div class="card">
               When you depart, please leave towels hanging on a hook,
