@@ -13,13 +13,73 @@
       <div class="screen" id="screenPrev" aria-hidden="true"></div>
 
       <div class="screen" id="screenCurrent">
-        <main class="page" data-base="#e17055">
+        <main class="page page-driving" data-base="#5e5087">
           <header class="page-header">
             <h1>Driving Tour</h1>
           </header>
 
           <section class="page-body">
-            <div class="card">Replace this with your content. 5</div>
+
+            <!-- Full width image -->
+            <img class="drive-hero" src="Assets/Images/Local/Driving-Tour.jpg" alt="Driving Tour" />
+
+            <!-- Numbered list -->
+            <div class="drive-wrap">
+              <ol class="drive-list">
+                <li><button type="button" class="drive-loc" data-drive-loc="Elf Ranch"><b>Elf Ranch</b></button></li>
+                <li><button type="button" class="drive-loc" data-drive-loc="Andy’s Fruit Market"><b>Andy’s Fruit Market</b></button></li>
+                <li><button type="button" class="drive-loc" data-drive-loc="Bodega CA"><b>Bodega CA</b></button></li>
+                <li><button type="button" class="drive-loc" data-drive-loc="Crab Shack"><b>Crab Shack</b></button></li>
+                <li><button type="button" class="drive-loc" data-drive-loc="Bodega Point"><b>Bodega Point</b></button></li>
+                <li><button type="button" class="drive-loc" data-drive-loc="Schoolhouse Beach"><b>Schoolhouse Beach</b></button></li>
+                <li><button type="button" class="drive-loc" data-drive-loc="River’s End Lookout"><b>River’s End Lookout</b></button></li>
+                <li><button type="button" class="drive-loc" data-drive-loc="Korbel Winery"><b>Korbel Winery</b></button></li>
+                <li><button type="button" class="drive-loc" data-drive-loc="Elf Ranch (Return)"><b>Elf Ranch</b></button></li>
+              </ol>
+
+              <!-- Map action card -->
+              <div class="card drive-map-card" id="driveMapCard" aria-live="polite">
+                <!-- Prompt (shows first) -->
+                <div class="drive-map-prompt" id="driveMapPrompt">Select a Location</div>
+
+                <!-- Action row (hidden until selection) -->
+                <a class="drive-map-action is-hidden" id="driveMapAction" href="#" target="_blank" rel="noopener">
+                  <span class="drive-map-text" id="driveMapText">Map to ...</span>
+                  <img class="drive-map-icon" src="Assets/Images/Icons/Icon-Map.png" alt="Map">
+                </a>
+              </div>
+
+              <!-- Info block -->
+              <div class="drive-info">
+                <div class="drive-info-row"><span class="drive-info-label">Info:</span><span class="drive-info-value"></span></div>
+                <div class="drive-info-row"><span class="drive-info-label">Distance:</span><span class="drive-info-value">58 mi (94 km)</span></div>
+                <div class="drive-info-row"><span class="drive-info-label">Time:</span><span class="drive-info-value">4-7 hr apx</span></div>
+                <div class="drive-info-row">
+                  <span class="drive-info-label">Note:</span>
+                  <span class="drive-info-value">If you were to drive this and not stop, Google has it as an approximate 1.5 hour drive.</span>
+                </div>
+              </div>
+
+              <!-- Guided text -->
+              <div class="drive-text">
+                <h2 class="drive-section-heading">What to Expect</h2>
+
+                <p>Heading South toward Sebastopol on Hwy 116 you might consider picking up a few delicious snacks at our unique <b>Andy’s</b> Fruit Market.</p>
+
+                <p>As you continue West out of Sebastopol, Hwy 12 takes you through the coastal foothill communities and into the town of <b>Bodega</b>. If you are familiar with Alfred Hitchcock’s “The Birds”; you will see the church and the schoolhouse as you pass thru. Continuing West, you will enter the eclectic fishing village of Bodega Bay.</p>
+
+                <p>There are some nice restaurants along the Hwy 1, but we like to hop over to the other side of the bay and enjoy the <b>Crab Shack</b>. It’s just crab, anyway you like it.</p>
+
+                <p>If you continue just ¼ mile up the road you are at <b>Bodega Head</b>. This amazing point was once considered for a nuclear power plant. It has a network of walking paths and dramatic views from the cliffs. Even a short walk is exhilarating and well worth it if you have the time.</p>
+
+                <p>From here, backtrack over to Hwy 1 and head North towards Jenner. There are a number of <b>beaches</b> that you can visit. Please check the Sonoma County Parks website. Please remember, this is rugged Northern California coastline. Each beach has its own unique location/accessibility information.</p>
+
+                <p>If you continue just a bit North past the town of Jenner there are some beautiful pull outs at the top that give you a view of the <b>Russian River</b> mouth and Seal Beach. River’s End Restaurant at the top is a landmark to look for a pull out.</p>
+
+                <p>The last leg of the drive is Hwy 116 back to Forestville. You will go through a number of fun and funky river towns and cross the Russian River a few times. Guerneville has Johnson Beach and lots of interesting <b>shops and restaurants</b>. Once you leave Guerneville it is just under 9 miles/15 minutes back to Forestville.</p>
+              </div>
+            </div>
+
           </section>
         </main>
       </div>

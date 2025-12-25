@@ -1350,6 +1350,147 @@ html, body{
 
 
 
+/* =============================================================================
+   Driving Tour Page (scoped)
+   ============================================================================= */
+
+.page-driving .drive-hero{
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 0;
+  margin: 0;
+}
+
+.page-driving .drive-wrap{
+  max-width: 620px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.page-driving .drive-list{
+  margin: 14px auto 22px;        /* bottom space before card */
+  padding-left: 42px;            /* increases space between number and text */
+}
+
+.page-driving .drive-list li{
+  margin: 12px 0;
+}
+
+.page-driving .drive-list li::marker{
+  font-weight: 400;              /* numbers regular */
+  color: rgba(255,255,255,0.80);
+}
+
+.page-driving .drive-loc{
+  display: inline;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.page-driving .drive-loc b{
+  font-weight: 900;              /* words bold */
+}
+
+.page-driving .drive-loc.is-active b{
+  text-decoration: underline;
+}
+
+/* Map card */
+.page-driving .drive-map-card{
+  margin: 10px 0 14px;
+  padding: 14px;
+}
+
+.page-driving .drive-map-prompt{
+  min-height: 64px;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  font-weight: 300;
+  color: rgba(255,255,255,0.85);
+}
+
+/* hidden until selection */
+.page-driving .drive-map-action{
+  min-height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.page-driving .drive-map-text{
+  font-weight: 900;
+}
+
+.page-driving .drive-map-icon{
+  width: 44px;
+  height: 44px;
+  flex: 0 0 auto;
+}
+
+.page-driving .drive-info{
+  margin: 10px 0 16px;
+  padding: 12px 0 0;
+}
+
+.page-driving .drive-info-row{
+  display: grid;
+  grid-template-columns: 90px 1fr;
+  gap: 10px;
+  align-items: start;
+  padding: 4px 0;
+}
+
+.page-driving .drive-info-label{
+  font-weight: 400;              /* regular */
+  color: rgba(255,255,255,0.88);
+}
+
+/* Only the "Info:" label bold */
+.page-driving .drive-info-row:first-child .drive-info-label{
+  font-weight: 900;
+}
+
+.page-driving .drive-info-value{
+  font-weight: 300;
+  color: rgba(255,255,255,0.88);
+  line-height: 1.45;
+}
+
+.page-driving .drive-text{
+  text-align: left;
+  font-weight: 300;
+  color: rgba(255,255,255,0.90);
+  line-height: 1.60;
+}
+
+.page-driving .drive-text p{
+  margin: 0 0 12px;
+}
+
+.page-driving .drive-text b{
+  font-weight: 900;
+}
+
+.page-driving .drive-section-heading{
+  margin: 0 0 10px;
+  font-size: 16px;
+  font-weight: 900;
+  text-align: left;
+}
+
+
+/* utility */
+.is-hidden{ display:none !important; }
 
 
 

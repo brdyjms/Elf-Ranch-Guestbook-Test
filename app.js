@@ -407,6 +407,119 @@ const LOCAL_ADVENTURES = [
 
 
 
+function initDrivingTour(rootEl){
+  if (!rootEl) return;
+
+  // Only run on Driving Tour page
+  const page = rootEl.querySelector('.page-driving');
+  if (!page) return;
+
+  // Avoid double-wiring after slide transitions
+  if (page.dataset.loaded === '1') return;
+
+  // Lat/Lng placeholders (assume North + West)
+  // Enter as numbers like: lat: "38.12345", lng: "122.12345"
+  const DRIVING_PLACES = {
+    "Elf Ranch":               { lat: "38.486346", lng: "122.890122" },
+    "Andy’s Fruit Market":     { lat: "38.421041", lng: "122.845506	" },
+    "Bodega CA":               { lat: "38.345979", lng: "122.973588" },
+    "Crab Shack":              { lat: "38.330921", lng: "123.059346" },
+    "Bodega Point":            { lat: "38.303016", lng: "123.057804" },
+    "Schoolhouse Beach":       { lat: "38.374995", lng: "123.078061" },
+    "River’s End Lookout":     { lat: "38.450612", lng: "123.124754" },
+    "Korbel Winery":           { lat: "38.509083", lng: "122.965794" },
+    "Elf Ranch (Return)":      { lat: "38.486346", lng: "122.890122" }
+  };
+
+  const promptEl = page.querySelector('#driveMapPrompt');
+  const actionEl = page.querySelector('#driveMapAction');
+  const textEl   = page.querySelector('#driveMapText');
+
+  function hide(el, shouldHide){
+    if (!el) return;
+    el.classList.toggle('is-hidden', !!shouldHide);
+  }
+
+  function isPlaceholder(v){
+    return !v || String(v).trim() === "" || String(v).trim().toLowerCase() === "placeholder";
+  }
+
+  function mapsUrlFromLatLng(latRaw, lngRaw){
+    const lat = String(latRaw || "").trim();
+    const lng = String(lngRaw || "").trim();
+
+    if (isPlaceholder(lat) || isPlaceholder(lng)) return "";
+
+    // Assume North (positive lat). For West longitude, make it negative if user enters positive.
+    const lngFixed = lng.startsWith("-") ? lng : `-${lng}`;
+
+    // Google Maps query
+    return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(lat + "," + lngFixed)}`;
+  }
+
+  function setActive(name){
+    // highlight active in list
+    page.querySelectorAll('.drive-loc').forEach(btn => {
+      btn.classList.toggle('is-active', btn.dataset.driveLoc === name);
+    });
+
+    const info = DRIVING_PLACES[name];
+    if (!name || !info){
+      if (promptEl) promptEl.textContent = "Select a Location";
+      hide(promptEl, false);
+      hide(actionEl, true);
+      return;
+    }
+
+const href = mapsUrlFromLatLng(info.lat, info.lng);
+
+// Always update the UI immediately
+if (textEl) textEl.textContent = `Map to ${name}`;
+
+// If coords are not entered yet, still show the action row,
+// but make the link "disabled" so it won't try to open maps.
+if (actionEl){
+  if (href){
+    actionEl.href = href;
+    actionEl.dataset.disabled = "0";
+    actionEl.removeAttribute("aria-disabled");
+  } else {
+    actionEl.href = "#";
+    actionEl.dataset.disabled = "1";
+    actionEl.setAttribute("aria-disabled", "true");
+  }
+}
+
+hide(promptEl, true);
+hide(actionEl, false);
+  }
+
+  // Wire up clicks
+  page.querySelectorAll('.drive-loc[data-drive-loc]').forEach(btn => {
+    btn.addEventListener('click', () => setActive(btn.dataset.driveLoc));
+    btn.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        setActive(btn.dataset.driveLoc);
+      }
+    });
+  });
+
+  // If coords are still placeholders, don't open a blank link
+  if (actionEl){
+    actionEl.addEventListener("click", (e) => {
+      if (actionEl.dataset.disabled === "1"){
+        e.preventDefault();
+      }
+    });
+  }
+
+  // initial state
+  setActive("");
+
+  page.dataset.loaded = '1';
+}
+
 
 
 
@@ -1020,6 +1133,8 @@ function initWineTour(rootEl){
     initLocalMarkets(rootEl);
     initLocalAdventures(rootEl);
     initWineTour(rootEl);
+    initDrivingTour(rootEl);
+
 
 
   }
