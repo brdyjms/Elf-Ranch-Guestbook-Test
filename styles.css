@@ -110,6 +110,9 @@ html, body{
   gap: 16px; /* space between cards */
 }
 
+
+
+
 .card{
   border-radius: 18px;
   padding: 16px;
@@ -159,6 +162,16 @@ html, body{
 .home{
   min-height: 100vh;
   background: var(--bg);
+  background-image:
+  radial-gradient(900px 600px at 20% 15%, rgba(120, 255, 210, 0.12), rgba(0,0,0,0) 55%),
+  radial-gradient(800px 520px at 85% 35%, rgba(140, 120, 255, 0.12), rgba(0,0,0,0) 55%),
+  radial-gradient(900px 620px at 45% 85%, rgba(0, 255, 140, 0.10), rgba(0,0,0,0) 55%),
+  linear-gradient(180deg, #07140f 0%, #081a14 35%, #061116 70%, #050a10 100%);
+
+  background-color: #050a10;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
 }
 
 .home-header{
@@ -1562,7 +1575,9 @@ html, body{
 
 @font-face{
   font-family: "HolaSophia";
-  src: url("/Assets/Images/Fonts/Hola-Sophia.ttf") format("truetype");
+  src:
+    url("/Assets/Fonts/Hola-Sophia.woff2") format("woff2"),
+    url("/Assets/Fonts/Hola-Sophia.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -1642,12 +1657,9 @@ html, body{
 
 
 
-
-
-
-
-
-
+.page .page-body{
+  padding-bottom: calc(200px + env(safe-area-inset-bottom));
+}
 
 
 
