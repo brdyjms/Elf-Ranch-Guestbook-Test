@@ -5,6 +5,91 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Fairy Tale</title>
   <link rel="stylesheet" href="styles.css" />
+
+  <!-- Page-scoped styles (you can also move this into styles.css if you prefer) -->
+  <style>
+    /* Load custom font */
+    @font-face{
+      font-family: "HolaSophia";
+      src: url("/Assets/Images/Fonts/Hola-Sophia.ttf") format("truetype");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    /* Fairy Tale page background + typography */
+    .page-fairytale{
+      /* Dark enchanted-forest gradient */
+      background:
+        radial-gradient(900px 600px at 20% 15%, rgba(120, 255, 210, 0.12), rgba(0,0,0,0) 55%),
+        radial-gradient(800px 520px at 85% 35%, rgba(140, 120, 255, 0.12), rgba(0,0,0,0) 55%),
+        radial-gradient(900px 620px at 45% 85%, rgba(0, 255, 140, 0.10), rgba(0,0,0,0) 55%),
+        linear-gradient(180deg, #07140f 0%, #081a14 35%, #061116 70%, #050a10 100%);
+    }
+
+    .page-fairytale .page-body{
+      padding: 18px 16px 28px;
+    }
+
+    .fairy-wrap{
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 18px 18px 8px;
+      border-radius: 18px;
+      background: rgba(0,0,0,0.18);
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .fairy-title{
+      font-family: "HolaSophia", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      font-size: 28px;
+      line-height: 1.1;
+      margin: 2px 0 14px;
+      color: rgba(255,255,255,0.95);
+      letter-spacing: 0.2px;
+    }
+
+    .fairy-text p{
+      font-family: "HolaSophia", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      font-size: 18px;
+      line-height: 1.65;
+      margin: 0 0 16px;
+      color: rgba(255,255,255,0.92);
+      font-weight: 400;
+    }
+
+    /* Drop cap (first letter grows to multiple lines) */
+    .fairy-text p::first-letter{
+      float: left;
+      font-size: 56px;
+      line-height: 0.92;
+      padding: 8px 10px 0 0;
+      margin: 0;
+      color: rgba(255,255,255,0.98);
+      text-shadow: 0 0 18px rgba(120,255,210,0.18), 0 0 22px rgba(140,120,255,0.14);
+    }
+
+    /* Optional: slightly tighten on very small screens */
+    @media (max-width: 380px){
+      .fairy-text p{ font-size: 17px; }
+      .fairy-text p::first-letter{ font-size: 52px; }
+    }
+
+    /* Fairy Tale: force gradient background (override base color) */
+    .page.page-fairytale{
+    background-image:
+        radial-gradient(900px 600px at 20% 15%, rgba(120, 255, 210, 0.12), rgba(0,0,0,0) 55%),
+        radial-gradient(800px 520px at 85% 35%, rgba(140, 120, 255, 0.12), rgba(0,0,0,0) 55%),
+        radial-gradient(900px 620px at 45% 85%, rgba(0, 255, 140, 0.10), rgba(0,0,0,0) 55%),
+        linear-gradient(180deg, #07140f 0%, #081a14 35%, #061116 70%, #050a10 100%) !important;
+
+    background-color: #050a10 !important; /* fallback */
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+    }
+
+  </style>
 </head>
 
 <body class="theme-dark">
@@ -13,13 +98,29 @@
       <div class="screen" id="screenPrev" aria-hidden="true"></div>
 
       <div class="screen" id="screenCurrent">
-        <main class="page" data-base="#00b894">
+        <main class="page page-fairytale" data-base="#6c5ce7">
           <header class="page-header">
             <h1>Fairy Tale</h1>
           </header>
 
           <section class="page-body">
-            <div class="card">Replace this with your content. 5</div>
+            <div class="fairy-wrap">
+              <div class="fairy-title">The Elf Ranch</div>
+
+              <div class="fairy-text">
+                <p>As thou gazest upon the sunset's glow, behold the silver and gold tapestries adorning the lands of this magical province called The Elf Ranch. Long ago, three merry elves settled in this wondrous abode—Yuristasia, a dreamer with starlight in her eyes; Jonoriel, a sage of plants and mysterious potions; and Berethor, both a builder of beauty and mischievous prankster who charmed the flightiest of birds from the treetops.</p>
+
+                <p>One fine morning, as the sun began its journey across the sky, the trio decided it was time to bring forth their shared visions. Mixing laughter, dreams, and a bit of elfin magic, The Elf Ranch burst with life. Yuristasia crafted lush gardens where flowers sang and trees whispered secrets to those who would listen. Jonoriel tended herbs sparkling with enchantment, brewing potions for even the most broken of hearts. Berethor, the innkeeper, fashioned whimsical cottages and cozy nooks to shelter all. The Elf Ranch became a haven of harmony and beauty, where chattering squirrels filled the air with the scent of adventure.</p>
+
+                <p>Upon a day, a stranger chanced upon the Elf Ranch. A young wanderer with flowing locks of blonde, seeking enchantment. She bore the name Anjavëa, hailing from the distant mountains of the Eastern province. Welcomed warmly, Berethor built for her a wondrous ham in the creekbed. Anjavëa mostly kept to herself, tending wild plants and forming kinship with the fairies.</p>
+
+                <p>As time did pass, upon a fine spring morn, Anjavëa made a proposal to her newfound family. “Let us share this magical abode with others seeking solace and wonder.” Yuristasia's eyes gleamed. Jonoriel scratched his head with a distant look, pondering future concoctions and potions. Berethor grinned at the notion of new hideaways, and his love for…</p>
+
+                <p>As weeks rolled on, the ranch transformed into a welcoming sanctuary. Special visitors arrived with hearts full of adventure. Yuristasia's gardens enchanted, Berethor’s huts protected, and tales of yore amused, while Jonoriel's herbs thrived and his potions healed. The world embraced The Elf Ranch, and with each new visitor, it flourished.</p>
+
+                <p>“Our enchantment thrives with those who love it,” Boroff mused, mischief twinkling in his eyes. Yuristasia chimed in, “Keep thine eyes open, for the magic at The Elf Ranch Cottage comes in many forms.”</p>
+              </div>
+            </div>
           </section>
         </main>
       </div>
