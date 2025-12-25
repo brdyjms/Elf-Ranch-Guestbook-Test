@@ -110,6 +110,7 @@ html, body{
   gap: 16px; /* space between cards */
 }
 
+
 .card{
   border-radius: 18px;
   padding: 16px;
@@ -274,39 +275,54 @@ html, body{
   margin-bottom: 12px;
 }
 
-/* Scoop cards with right-side action icon */
+/* Scoop page — cards with right-side action icon */
 .page-scoop .scoop-card-with-icon{
   display: flex;
   align-items: center;
   gap: 14px;
 }
 
+/* Left text content */
 .page-scoop .scoop-card-content{
   flex: 1;
   min-width: 0;
+  line-height: 1.5;
 }
 
-.page-scoop .scoop-card-action a{
-  display: inline-flex;
+/* Right icon container */
+.page-scoop .scoop-card-action{
+  display: flex;
   align-items: center;
   justify-content: center;
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-  background: rgba(255,255,255,.08);
-  border: 1px solid rgba(255,255,255,.12);
+}
+
+/* Icon button styling */
+.page-scoop .scoop-card-action a{
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: rgba(0,0,0,.22);
+  border: 1px solid rgba(255,255,255,.18);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   -webkit-tap-highlight-color: transparent;
+}
+
+.page-scoop .scoop-card-action img{
+  width: 30px;
+  height: 30px;
 }
 
 .page-scoop .scoop-card-action a:active{
   transform: translateY(1px);
 }
 
-.page-scoop .scoop-card-action img{
-  width: 28px;
-  height: 28px;
-  display: block;
-}
+
+
+
 
 
 /* ========================================================================================================================================================== Page Specific CSS  */
