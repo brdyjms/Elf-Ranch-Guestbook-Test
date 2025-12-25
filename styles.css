@@ -1368,14 +1368,26 @@ html, body{
   padding: 16px;
 }
 
+/* Card container for the location list (Wine Tour style) */
+.page-driving .drive-list-card{
+  max-width: 680px;
+  margin: 14px auto 22px;                 /* bottom spacing before map card */
+  padding: 18px 16px;
+  border-radius: 18px;
+  background: rgba(21, 15, 65, 0.4);    /* purple tint */
+  border: 1px solid rgba(255,255,255,0.14);
+}
+
+
 .page-driving .drive-list{
-  margin: 14px auto 22px;        /* bottom space before card */
-  padding-left: 42px;            /* increases space between number and text */
+  margin: 0;
+  padding-left: 42px;                      /* spacing between number and text */
 }
 
 .page-driving .drive-list li{
   margin: 12px 0;
 }
+
 
 .page-driving .drive-list li::marker{
   font-weight: 400;              /* numbers regular */
