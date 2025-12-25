@@ -13,13 +13,139 @@
       <div class="screen" id="screenPrev" aria-hidden="true"></div>
 
       <div class="screen" id="screenCurrent">
-        <main class="page" data-base="#6c5ce7">
+        <main class="page page-wine" data-base="#5e5087">
           <header class="page-header">
             <h1>Wine Tour</h1>
           </header>
 
           <section class="page-body">
-            <div class="card">Replace this with your content. 5</div>
+            <p class="wine-intro">
+              Would you like to make the most of your day, but are not sure where to start?<br>
+              Here is a suggested local itinerary you might enjoy. Some places require reservations, some do not.<br>
+              It is all very close, and there are a plethora of wineries you will simply drive by on this adventure up West Side Road.<br>
+              Please make sure to enjoy responsibly!
+            </p>
+
+            <div class="wine-itinerary-wrap">
+              <table class="wine-itinerary" aria-label="Suggested local itinerary">
+                <tbody>
+                  <tr>
+                    <td class="wine-time"></td>
+                    <td class="wine-time">—</td>
+                    <td class="wine-time">9:45</td>
+                    <td class="wine-loc-cell">Depart Elf Ranch</td>
+                  </tr>
+
+                  <tr>
+                    <td class="wine-time">10:00</td>
+                    <td class="wine-time">—</td>
+                    <td class="wine-time">10:45</td>
+                    <td class="wine-loc-cell">
+                      <button type="button" class="wine-loc" data-wine-loc="Hartford Family Winery">
+                        <b>Hartford Family Winery</b>
+                      </button>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td class="wine-time">11:00</td>
+                    <td class="wine-time">—</td>
+                    <td class="wine-time">11:45</td>
+                    <td class="wine-loc-cell">
+                      <button type="button" class="wine-loc" data-wine-loc="Korbel Champagne Cellars">
+                        <b>Korbel Champagne Cellars</b>
+                      </button>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td class="wine-time">12:00</td>
+                    <td class="wine-time">—</td>
+                    <td class="wine-time">12:45</td>
+                    <td class="wine-loc-cell">
+                      Lunch Choice<br>
+                      <button type="button" class="wine-loc" data-wine-loc="Russian River Pub">
+                        <b>Russian River Pub</b>
+                      </button>
+                      <span class="wine-or">or</span>
+                      <button type="button" class="wine-loc" data-wine-loc="Boon Eat+Drink">
+                        <b>Boon Eat+Drink</b>
+                      </button>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td class="wine-time">1:00</td>
+                    <td class="wine-time">—</td>
+                    <td class="wine-time">1:45</td>
+                    <td class="wine-loc-cell">
+                      <button type="button" class="wine-loc" data-wine-loc="Moshin Vineyards">
+                        <b>Moshin Vineyards</b>
+                      </button>
+                      <span class="wine-or">or</span>
+                      <button type="button" class="wine-loc" data-wine-loc="Gary Farrell Vineyards & Winery">
+                        <b>Gary Farrell Vineyards &amp; Winery</b>
+                      </button>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td class="wine-time">2:00</td>
+                    <td class="wine-time">—</td>
+                    <td class="wine-time">2:45</td>
+                    <td class="wine-loc-cell">
+                      <button type="button" class="wine-loc" data-wine-loc="J. Rochioli Vineyard & Winery">
+                        <b>J. Rochioli Vineyard &amp; Winery</b>
+                      </button>
+                      <span class="wine-or">or</span>
+                      <button type="button" class="wine-loc" data-wine-loc="Landmark Vineyards">
+                        <b>Landmark Vineyards</b>
+                      </button>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td class="wine-time">3:00</td>
+                    <td class="wine-time">—</td>
+                    <td class="wine-time">4:00</td>
+                    <td class="wine-loc-cell">
+                      <button type="button" class="wine-loc" data-wine-loc="Twomey Cellars">
+                        <b>Twomey Cellars</b>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Actions / Icons panel -->
+            <div class="card wine-actions-card" id="wineActionsCard" aria-live="polite">
+              <div class="wine-actions-head">
+                <div class="wine-actions-title is-hidden" id="wineActionsTitle"></div>
+              </div>
+
+              <div class="wine-actions-body">
+                <div class="wine-actions-prompt" id="wineActionsPrompt">
+                  Click a Location for Icons
+                </div>
+
+                <div class="wine-actions-icons is-hidden" id="wineActionsIcons">
+                  <a class="wine-icon-btn" id="winePhoneBtn" href="#" aria-label="Call" title="Call">
+                    <img src="Assets/Images/Icons/Icon-Phone.png" alt="Call">
+                  </a>
+
+                  <a class="wine-icon-btn" id="wineMapBtn" href="#" target="_blank" rel="noopener" aria-label="Map" title="Map">
+                    <img src="Assets/Images/Icons/Icon-Map.png" alt="Map">
+                  </a>
+
+                  <a class="wine-icon-btn" id="wineWebBtn" href="#" target="_blank" rel="noopener" aria-label="Website" title="Website">
+                    <img src="Assets/Images/Icons/Icon-Web.png" alt="Website">
+                  </a>
+                </div>
+                <div class="wine-actions-selected is-hidden" id="wineActionsSelectedName"></div>
+
+              </div>
+            </div>
           </section>
         </main>
       </div>

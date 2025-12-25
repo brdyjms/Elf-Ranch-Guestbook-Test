@@ -536,6 +536,219 @@ function initLocalAdventures(rootEl) {
 
 
 
+function initWineTour(rootEl){
+  if (!rootEl) return;
+
+  // Only run on Wine Tour page
+  const page = rootEl.querySelector('.page-wine');
+  if (!page) return;
+
+  // Avoid double-wiring after slide transitions
+  if (page.dataset.loaded === '1') return;
+
+  // --- Placeholder lookup (you’ll fill these in later) ---
+  // If any field is blank, we hide that icon.
+  const WINE_PLACES = {
+    "Hartford Family Winery": {
+      phone: "(707) 904-6950",
+      address1: "8075 Martinelli Road Ext",
+      address2: "Forestville, CA 95436",
+      website: "https://www.hartfordwines.com/"
+    },
+    "Korbel Champagne Cellars": {
+      phone: "(707) 824-7000",
+      address1: "13250 River Road",
+      address2: "Guerneville, CA 95446",
+      website: "https://www.korbel.com/"
+    },
+    "Russian River Pub": {
+      phone: "(707) 887-7932",
+      address1: "11829 River Road ",
+      address2: "Forestville, CA 95436",
+      website: "https://www.russianriverpub.com/"
+    },
+    "Boon Eat+Drink": {
+      phone: "(707) 869-0780",
+      address1: "16248 Main St, ",
+      address2: "Guerneville, CA 95446",
+      website: "https://eatatboon.com/"
+    },
+    "Moshin Vineyards": {
+      phone: "(707) 433-5499",
+      address1: "10295 Westside Road",
+      address2: "Healdsburg, CA 95448",
+      website: "https://moshinvineyards.com/"
+    },
+    "Gary Farrell Vineyards & Winery": {
+      phone: "(707) 473-2909",
+      address1: "10701 Westside Rd",
+      address2: "Healdsburg, CA 95448",
+      website: "https://www.garyfarrellwinery.com/"
+    },
+    "J. Rochioli Vineyard & Winery": {
+      phone: "(707) 433-2305",
+      address1: "6192 Westside Road",
+      address2: "Healdsburg, CA 95448",
+      website: "https://www.rochioliwinery.com/"
+    },
+    "Landmark Vineyards": {
+      phone: "(707) 833-0053",
+      address1: "101 Adobe Canyon Rd",
+      address2: "Kenwood, CA 95452",
+      website: "https://www.landmarkwine.com/"
+    },
+    "Twomey Cellars": {
+      phone: "(707) 942-7122",
+      address1: "3000 Westside Rd",
+      address2: "Healdsburg, CA 95448",
+      website: "https://twomey.com/"
+    }
+  };
+
+  const titleEl = page.querySelector('#wineActionsTitle');
+  const promptEl = page.querySelector('#wineActionsPrompt');
+  const iconsWrap = page.querySelector('#wineActionsIcons');
+  const selectedNameEl = page.querySelector('#wineActionsSelectedName');
+
+  const phoneBtn = page.querySelector('#winePhoneBtn');
+  const mapBtn   = page.querySelector('#wineMapBtn');
+  const webBtn   = page.querySelector('#wineWebBtn');
+
+  function hide(el, shouldHide){
+    if (!el) return;
+    el.classList.toggle('is-hidden', !!shouldHide);
+  }
+
+  function asHttp(url){
+    const u = String(url || '').trim();
+    if (!u) return '';
+    if (/^https?:\/\//i.test(u)) return u;
+    return `https://${u}`;
+  }
+
+  function setActivePlace(name){
+    const info = WINE_PLACES[name] || null;
+
+    // UI title
+    if (titleEl) titleEl.textContent = name || 'Click a Location for Icons';
+
+    // Highlight active in itinerary
+    page.querySelectorAll('.wine-loc').forEach(btn => {
+      btn.classList.toggle('is-active', btn.dataset.wineLoc === name);
+    });
+
+    if (!name || !info){
+      // Reset state (nothing selected)
+      if (titleEl) titleEl.textContent = '';
+      hide(titleEl, true);
+
+      if (promptEl) promptEl.textContent = 'Click a Location for Icons';
+      hide(promptEl, false);
+
+      hide(iconsWrap, true);
+
+      if (selectedNameEl) selectedNameEl.textContent = '';
+      hide(selectedNameEl, true);
+
+      return;
+    }
+
+
+    // Phone
+    const tel = window.ER?.normalizePhoneForTel
+      ? window.ER.normalizePhoneForTel(info.phone)
+      : String(info.phone || '').replace(/[^\d+]/g, '');
+    const telHref = tel ? `tel:${tel}` : '';
+
+    // Map
+    const mapHref = window.ER?.mapsSearchLink
+      ? window.ER.mapsSearchLink(info.address1, info.address2)
+      : '';
+
+    // Web
+    const webHref = asHttp(info.website);
+
+    if (phoneBtn){
+      if (telHref){
+        phoneBtn.href = telHref;
+        phoneBtn.setAttribute('aria-label', `Call ${name}`);
+        hide(phoneBtn, false);
+      } else {
+        hide(phoneBtn, true);
+      }
+    }
+
+    if (mapBtn){
+      if (mapHref){
+        mapBtn.href = mapHref;
+        mapBtn.setAttribute('aria-label', `Map ${name}`);
+        hide(mapBtn, false);
+      } else {
+        hide(mapBtn, true);
+      }
+    }
+
+    if (webBtn){
+      if (webHref){
+        webBtn.href = webHref;
+        webBtn.setAttribute('aria-label', `Website for ${name}`);
+        hide(webBtn, false);
+      } else {
+        hide(webBtn, true);
+      }
+    }
+
+    // Swap prompt -> icons
+    hide(promptEl, true);
+    hide(iconsWrap, false);
+
+    // Show selected location name under the icons
+    if (selectedNameEl) selectedNameEl.textContent = name;
+    hide(selectedNameEl, false);
+  }
+
+  // Click handlers on the bold locations
+  page.querySelectorAll('.wine-loc[data-wine-loc]').forEach(btn => {
+    btn.addEventListener('click', () => setActivePlace(btn.dataset.wineLoc));
+    btn.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        setActivePlace(btn.dataset.wineLoc);
+      }
+    });
+  });
+
+  // initial state
+  if (selectedNameEl) selectedNameEl.textContent = '';
+  hide(selectedNameEl, true);
+  setActivePlace('');
+
+  page.dataset.loaded = '1';
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -806,6 +1019,8 @@ function initLocalAdventures(rootEl) {
     initLocalEateries(rootEl); // <-- add this
     initLocalMarkets(rootEl);
     initLocalAdventures(rootEl);
+    initWineTour(rootEl);
+
 
   }
 

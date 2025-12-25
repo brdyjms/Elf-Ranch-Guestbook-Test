@@ -889,10 +889,6 @@ html, body{
 
 
 
-/* =============================================================================
-   Local Adventures Page (scoped)
-   
-   ============================================================================= */
 
 /* =============================================================================
    Local Adventures Page (scoped)
@@ -1146,6 +1142,240 @@ html, body{
 .page-adventures .adv-photo-back{
   opacity: 1;
 }
+
+
+
+
+
+
+
+/* =============================================================================
+   Wine Tour Page (scoped)
+   ============================================================================= */
+
+.page-wine .wine-intro{
+  max-width: 640px;
+  margin: 10px auto 18px;
+  padding: 0 16px;
+  text-align: Left;
+  line-height: 1.55;
+  color: rgba(255,255,255,92);
+  font-weight: 300;
+}
+
+.page-wine .wine-itinerary-wrap{
+  max-width: 680px;
+  margin: 0 auto 18px;
+  padding: 18px 16px;
+  border-radius: 18px;
+  background: rgba(21, 15, 65, 0.4);   /* purple tint */
+  border: 1px solid rgba(255,255,255,0.14);
+}
+
+.page-wine .wine-itinerary{
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.page-wine .wine-itinerary td{
+  padding: 10px 8px;
+  vertical-align: top;
+  font-weight: 300; /* thin baseline */
+  color: rgba(255,255,255,92);
+}
+
+/* make the time columns behave like columns (tight + aligned) */
+.page-wine .wine-itinerary td.wine-time{
+  padding: 10px 6px;          /* less horizontal padding */
+  width: auto;                /* let content size itself */
+}
+
+/* 1st column (arrival time): right aligned */
+.page-wine .wine-itinerary td.wine-time:nth-child(1){
+  text-align: right;
+  width: 60px;                /* consistent width */
+}
+
+/* 2nd column (dash): small + minimal space */
+.page-wine .wine-itinerary td.wine-time:nth-child(2){
+  text-align: center;
+  width: 14px;                /* tighter */
+  padding-left: 0;
+  padding-right: 0;
+  color: rgba(255,255,255,0.55);
+}
+
+/* 3rd column (departure time): left aligned */
+.page-wine .wine-itinerary td.wine-time:nth-child(3){
+  text-align: left;
+  width: 60px;                /* consistent width */
+}
+
+/* location column: left aligned */
+.page-wine .wine-itinerary .wine-loc-cell{
+  text-align: left;
+}
+
+
+.page-wine .wine-time{
+  width: 64px;
+  text-align: center;
+  white-space: nowrap;
+  color: rgba(255,255,255,75);
+  font-weight: 400;
+}
+
+.page-wine .wine-loc-cell{
+  padding-left: 10px;
+  line-height: 1.35;
+  text-align: left;
+}
+
+
+/* keep “or” on same line as the preceding location */
+.page-wine .wine-or{
+  display: inline;
+  white-space: nowrap;
+  padding: 0 6px;
+}
+
+.page-wine .wine-loc{
+  display: inline;
+  text-align: left;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  text-decoration: none;
+}
+
+.page-wine .wine-loc b{
+  font-weight: 900;
+  display: inline;
+  text-align: left;
+}
+
+.page-wine .wine-loc:hover b{
+  text-decoration: underline;
+}
+
+.page-wine .wine-loc.is-active b{
+  text-decoration: underline;
+}
+
+.page-wine .wine-actions-card{
+  max-width: 560px;
+  margin: 0 auto 22px;
+  padding: 16px;
+  text-align: center;
+}
+
+.page-wine .wine-actions-title{
+  font-size: 16px;
+  font-weight: 900;
+  margin-bottom: 10px;
+}
+
+.page-wine .wine-actions-prompt{
+  color: rgba(255,255,255,80);
+  font-weight: 300;
+  padding: 10px 0 6px;
+}
+
+.page-wine .wine-actions-icons{
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  padding-top: 6px;
+}
+
+/* Smaller buttons */
+.page-wine .wine-icon-btn{
+  width: 90px;
+  height: 55px;
+  border-radius: 14px;
+}
+
+/* Smaller icon image */
+.page-wine .wine-icon-btn img{
+  width: 48px;
+  height: 48px;
+}
+
+.page-wine .wine-icon-btn:active{
+  transform: translateY(1px);
+}
+
+/* Center the prompt text inside the card area */
+.page-wine .wine-actions-body{
+  min-height: 92px;              /* gives room to center nicely */
+  display: grid;
+  place-items: center;           /* centers horizontally + vertically */
+}
+
+/* Icons row: 3 across, single line, spaced for fat fingers */
+.page-wine .wine-actions-icons{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;                     /* spacing between buttons */
+  padding-top: 0;
+}
+
+.page-wine .wine-actions-selected{
+  margin-top: 10px;
+  text-align: center;
+  font-weight: 400;
+  font-size: 14px;
+  color: rgba(255,255,255,92);
+}
+
+.page-wine .wine-itinerary td.wine-time:nth-child(2){
+  color: transparent; /* dash becomes invisible */
+}
+
+/* utility */
+.is-hidden{ display:none !important; }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
