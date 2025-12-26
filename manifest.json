@@ -1,7 +1,7 @@
 {
   "name": "Elf Ranch",
   "short_name": "Elf Ranch",
-  "start_url": "Scoop.html",
+  "start_url": "index.html",
   "display": "standalone",
   "background_color": "#061222",
   "theme_color": "#061222",
